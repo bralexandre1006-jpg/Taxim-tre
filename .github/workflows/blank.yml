@@ -1,0 +1,133 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Le SDK Android est deja installe sur les machines GitHub :
+      # on accepte les licences et on ajoute la plateforme 36 sans action externe.
+      - name: Preparer le SDK Android
+        run: |
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          [ -x "$SDKM" ] || SDKM="$(ls -d $ANDROID_HOME/cmdline-tools/*/bin/sdkmanager | tail -1)"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" --install "platforms;android-36" "build-tools;36.0.0" "platform-tools" > /dev/null
+          echo "sdk.dir=$ANDROID_HOME"
+
+      - name: Installer les dependances
+        run: npm install
+
+      - name: Construire l'interface (www/index.html)
+        run: python3 build.py
+
+      - name: Generer le projet Android
+        run: npm run android:prepare
+
+      # Cle de signature PERMANENTE : chaque APK est signe avec la meme cle,
+      # donc les mises a jour s'installent par-dessus sans desinstaller.
+      # Si tu ajoutes le secret KEYSTORE_BASE64, il remplace la cle ci-dessous.
+      - name: Installer la cle de signature
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          else
+            base64 -d > "$RUNNER_TEMP/release.jks" <<'KEY'
+          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
+          KEY
+          fi
+          keytool -list -keystore "$RUNNER_TEMP/release.jks" -storepass "${{ secrets.KEYSTORE_PASSWORD || 'taximetre2026' }}" | grep -i fingerprint || true
+
+      - name: Compiler l'APK signe
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file="$RUNNER_TEMP/release.jks" \
+            -Pandroid.injected.signing.store.password="${{ secrets.KEYSTORE_PASSWORD || 'taximetre2026' }}" \
+            -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS || 'taximetre' }}" \
+            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD || 'taximetre2026' }}"
+          mkdir -p ../dist
+          cp app/build/outputs/apk/release/*.apk ../dist/Taximetre.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Taximetre-apk
+          path: dist/Taximetre.apk
+
+      - name: Publier une release (tag v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/Taximetre.apk
