@@ -1,0 +1,22 @@
+{
+  "appId": "be.taximetre.app",
+  "appName": "Taximètre",
+  "webDir": "www",
+  "backgroundColor": "#0B0B0D",
+  "android": {
+    "backgroundColor": "#0B0B0D",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0,
+      "launchAutoHide": true,
+      "backgroundColor": "#0B0B0D",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0B0B0D"
+    }
+  }
+}
