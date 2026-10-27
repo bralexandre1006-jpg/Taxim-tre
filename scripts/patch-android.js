@@ -19,10 +19,30 @@ fs.writeFileSync(manifest, m);
 
 const gradle = path.join(root, 'android/app/build.gradle');
 let g = fs.readFileSync(gradle, 'utf8');
-const code = parseInt(process.env.GITHUB_RUN_NUMBER || '1', 10);
+// versionCode basé sur l'heure : toujours plus grand que le précédent, même dans un nouveau dépôt
+const code = Math.floor(Date.now() / 60000) - 29000000;
 g = g.replace(/versionCode \d+/, `versionCode ${code}`).replace(/versionName "[^"]*"/, `versionName "${pkg.version}"`);
 fs.writeFileSync(gradle, g);
 console.log(`Android patché : versionCode ${code}, versionName ${pkg.version}`);
+
+// Textes et icône de la notification « course en cours »
+const strings = path.join(root, 'android/app/src/main/res/values/strings.xml');
+let sx = fs.readFileSync(strings, 'utf8');
+if (!sx.includes('capacitor_background_geolocation_notification_icon')) {
+  sx = sx.replace('</resources>', `    <string name="capacitor_background_geolocation_notification_icon">drawable/ic_stat_taxi</string>
+    <string name="capacitor_background_geolocation_notification_color">#FFC400</string>
+    <string name="capacitor_background_geolocation_notification_channel_name">Course en cours</string>
+</resources>`);
+  fs.writeFileSync(strings, sx);
+}
+
+// Compatibilité du plugin GPS arrière-plan avec Android Gradle Plugin 8.13+
+const bgGradle = path.join(root, 'node_modules/@capacitor-community/background-geolocation/android/build.gradle');
+if (fs.existsSync(bgGradle)) {
+  let bg = fs.readFileSync(bgGradle, 'utf8');
+  bg = bg.replace("getDefaultProguardFile('proguard-android.txt')", "getDefaultProguardFile('proguard-android-optimize.txt')").replace(/lintOptions\s*\{/, 'lint {');
+  fs.writeFileSync(bgGradle, bg);
+}
 
 // Icônes : voiture jaune sur fond noir, générées depuis assets/car-mask.png
 (async () => {
@@ -37,12 +57,20 @@ console.log(`Android patché : versionCode ${code}, versionName ${pkg.version}`)
     const img = await sharp(rgb, { raw: { width: w, height: h, channels: 3 } }).joinChannel(alpha.data, { raw: { width: w, height: h, channels: 1 } }).png().toBuffer();
     return { img, w, h };
   }
-  const big = await car(760);
+  const big = await car(940);
   await sharp({ create: { width: 1024, height: 1024, channels: 4, background: BG } })
     .composite([{ input: big.img, left: (1024 - big.w) >> 1, top: (1024 - big.h) >> 1 }]).flatten({ background: BG }).png().toFile(A('icon-only.png'));
-  const fg = await car(600);
+  const fg = await car(700);
   await sharp({ create: { width: 1024, height: 1024, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
     .composite([{ input: fg.img, left: (1024 - fg.w) >> 1, top: (1024 - fg.h) >> 1 }]).png().toFile(A('icon-foreground.png'));
   await sharp({ create: { width: 1024, height: 1024, channels: 3, background: BG } }).png().toFile(A('icon-background.png'));
+  // Petite icône blanche pour la notification de course
+  const res = path.join(root, 'android/app/src/main/res');
+  const st = await sharp(A('car-mask.png')).resize({ width: 92, kernel: 'lanczos3' }).extractChannel('alpha').raw().toBuffer({ resolveWithObject: true });
+  const white = Buffer.alloc(st.info.width * st.info.height * 3, 255);
+  const small = await sharp(white, { raw: { width: st.info.width, height: st.info.height, channels: 3 } }).joinChannel(st.data, { raw: { width: st.info.width, height: st.info.height, channels: 1 } }).png().toBuffer();
+  fs.mkdirSync(path.join(res, 'drawable-nodpi'), { recursive: true });
+  await sharp({ create: { width: 96, height: 96, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+    .composite([{ input: small, gravity: 'center' }]).png().toFile(path.join(res, 'drawable-nodpi', 'ic_stat_taxi.png'));
   console.log('Icônes générées (voiture seule)');
 })().catch(e => { console.error('Erreur icônes :', e); process.exit(1); });

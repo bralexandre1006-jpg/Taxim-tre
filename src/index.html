@@ -100,11 +100,12 @@ body.ready .reveal{animation:rise .7s var(--ease) both}
 @keyframes ping{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.9);opacity:0}}
 
 /* ===== HERO ===== */
-.hero{position:relative;border-radius:var(--rXL);padding:18px 18px 16px;background:linear-gradient(165deg,#1E1E23 0%,#141417 55%,#111114 100%);border:1px solid var(--line);overflow:hidden;isolation:isolate}
-.hero::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:conic-gradient(from var(--ang,0deg),transparent 0 62%,rgba(255,196,0,.9) 72%,rgba(255,149,0,.2) 82%,transparent 90%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .6s;z-index:2;pointer-events:none}
-body.running .hero::before{opacity:1;animation:spin 4s linear infinite}
-@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
-@keyframes spin{to{--ang:360deg}}
+.hero{position:relative;border-radius:var(--rXL);padding:18px 18px 16px;background:#16161A;overflow:hidden;isolation:isolate;transform:translateZ(0)}
+.hero .ring{position:absolute;left:50%;top:50%;width:150%;aspect-ratio:1;margin-left:-75%;translate:0 -50%;background:conic-gradient(transparent 0 60%,rgba(255,196,0,.95) 72%,rgba(255,149,0,.25) 84%,transparent 92%);opacity:0;transition:opacity .6s;z-index:-3;will-change:transform;pointer-events:none}
+body.running .hero .ring{opacity:1;animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero .fill{position:absolute;inset:1.5px;border-radius:calc(var(--rXL) - 1.5px);background:linear-gradient(165deg,#1E1E23 0%,#141417 55%,#111114 100%);z-index:-2;pointer-events:none}
+.hero .edge0{position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line);z-index:-1;pointer-events:none}
 .hero .halo{position:absolute;right:-90px;top:-110px;width:300px;height:300px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,196,0,.2),transparent);opacity:.3;transition:opacity .6s;z-index:-1;pointer-events:none}
 body.running .hero .halo{opacity:1;animation:breathe 3.2s ease-in-out infinite}
 @keyframes breathe{50%{transform:scale(1.18)}}
@@ -123,18 +124,18 @@ body.running .hero .halo{opacity:1;animation:breathe 3.2s ease-in-out infinite}
 .rate b{color:var(--text);font-weight:800}
 .hero-lbl{margin-top:16px;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--muted)}
 .price{display:flex;align-items:flex-end;gap:10px;margin-top:2px;height:92px}
-.roll{font-family:var(--num);font-weight:700;font-size:84px;line-height:1;letter-spacing:-.02em;display:flex;height:1em;overflow:hidden}
-.roll .dg{display:inline-block;width:.6em;height:1em;overflow:hidden;text-align:center}
+.roll{font-family:var(--num);font-weight:700;font-size:84px;line-height:1;letter-spacing:0;display:flex;height:1.04em;overflow-x:visible;overflow-y:clip;font-variant-numeric:tabular-nums}
+.roll .dg{display:inline-flex;justify-content:center;width:.66em;height:1.04em;overflow-x:visible;overflow-y:clip;text-align:center}
 .roll .dg .st{display:flex;flex-direction:column;transition:transform .7s var(--ease);will-change:transform}
-.roll .dg .st b{display:block;height:1em;font-weight:inherit}
-.roll .sep{display:inline-block;width:.24em;text-align:center}
+.roll .dg .st b{display:block;height:1.04em;line-height:1.04em;font-weight:inherit;white-space:nowrap}
+.roll .sep{display:inline-block;width:.26em;text-align:center}
 .roll .enter{animation:digitIn .45s var(--spring)}
 @keyframes digitIn{from{opacity:0;transform:scale(.6)}}
 .cur{font-family:var(--num);font-size:34px;font-weight:700;color:var(--accent);padding-bottom:10px}
 
 /* road */
 .road{position:relative;height:70px;margin-top:12px;border-radius:var(--rM);background:linear-gradient(180deg,#0E0E11,#0B0B0D);border:1px solid var(--line);overflow:hidden}
-.road .lane{position:absolute;left:0;right:0;bottom:17px;height:3px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.22) 0 24px,transparent 24px 52px);background-size:52px 3px}
+.road .lane{position:absolute;left:0;right:-52px;bottom:17px;height:3px;will-change:transform;background:repeating-linear-gradient(90deg,rgba(255,255,255,.22) 0 24px,transparent 24px 52px);background-size:52px 3px}
 .road .edge{position:absolute;left:0;right:0;bottom:8px;height:1px;background:rgba(255,255,255,.08)}
 .road .taxi{position:absolute;right:30px;bottom:19px;width:92px;height:41px;background:var(--grad);-webkit-mask:url(CAR_MASK) center/contain no-repeat;mask:url(CAR_MASK) center/contain no-repeat;transition:transform .8s var(--spring),opacity .5s;opacity:.4}
 body.running .road .taxi{opacity:1}
@@ -232,14 +233,19 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
 /* ===== LAUNCH ===== */
 #launch{position:fixed;inset:0;z-index:80;pointer-events:none;visibility:hidden}
 #launch.go{visibility:visible}
-#launch .wipe{position:absolute;inset:0;background:var(--grad);clip-path:circle(0 at var(--x,50%) var(--y,85%))}
-#launch.go .wipe{animation:wipe 1.7s var(--ease) forwards}
-@keyframes wipe{0%{clip-path:circle(0 at var(--x) var(--y));opacity:1}30%{clip-path:circle(150% at var(--x) var(--y));opacity:1}76%{clip-path:circle(150% at var(--x) var(--y));opacity:1}100%{clip-path:circle(150% at var(--x) var(--y));opacity:0}}
+#launch .wipe{position:absolute;left:var(--x,50%);top:var(--y,85%);width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:radial-gradient(circle,#FFD54A 0%,#FFC400 50%,#FFA412 100%);transform:scale(0);will-change:transform;backface-visibility:hidden}
+#launch.go .wipe{animation:wipe .55s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes wipe{from{transform:scale(.02)}to{transform:scale(var(--s,20))}}
+#launch .solid{position:absolute;inset:0;background:var(--grad);opacity:0}
+#launch.go .solid{animation:solid 1.7s linear forwards}
+@keyframes solid{0%,30%{opacity:0}31%,76%{opacity:1}100%{opacity:0}}
+#launch.go{animation:lfade 1.7s linear forwards}
+@keyframes lfade{0%,76%{opacity:1}100%{opacity:0}}
 #launch .lstreaks{position:absolute;left:0;right:0;top:50%;height:150px;transform:translateY(-75%)}
-#launch .lstreaks i{position:absolute;left:0;height:4px;border-radius:4px;background:rgba(26,19,0,.35);opacity:0}
+#launch .lstreaks i{position:absolute;left:0;height:4px;border-radius:4px;background:rgba(26,19,0,.35);opacity:0;will-change:transform,opacity}
 #launch.go .lstreaks i{animation:lstreak .7s var(--ease) forwards}
 @keyframes lstreak{0%{transform:translateX(100vw);opacity:0}30%{opacity:1}100%{transform:translateX(-110vw);opacity:0}}
-#launch .lcar{position:absolute;left:50%;top:50%;width:230px;height:102px;margin:-124px 0 0 -115px;background:var(--ink);-webkit-mask:url(CAR_MASK) center/contain no-repeat;mask:url(CAR_MASK) center/contain no-repeat;transform:translateX(-120vw)}
+#launch .lcar{position:absolute;left:50%;top:50%;width:230px;height:102px;margin:-124px 0 0 -115px;background:var(--ink);-webkit-mask:url(CAR_MASK) center/contain no-repeat;mask:url(CAR_MASK) center/contain no-repeat;transform:translateX(-120vw);will-change:transform;backface-visibility:hidden}
 #launch.go .lcar{animation:lcar 1.55s .18s cubic-bezier(.5,0,.2,1) forwards}
 @keyframes lcar{0%{transform:translateX(-120vw) skewX(-14deg)}36%{transform:translateX(0) skewX(4deg)}44%{transform:translateX(-6px) skewX(-2deg)}56%{transform:translateX(0)}78%{transform:translateX(0)}100%{transform:translateX(130vw) skewX(-18deg)}}
 #launch .ltxt{position:absolute;left:0;right:0;top:50%;margin-top:4px;text-align:center;color:var(--ink);opacity:0}
@@ -374,6 +380,7 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
     </header>
 
     <div class="hero reveal" id="hero" style="animation-delay:.06s">
+      <div class="ring"></div><div class="fill"></div><div class="edge0"></div>
       <div class="halo"></div>
       <div class="hero-top">
         <div class="status" id="status"><i></i><span id="statusTxt">LIBRE</span></div>
@@ -472,13 +479,13 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
     <div class="rc-foot"><button class="sbtn" id="rcShare"></button><button class="sbtn acc" id="rcClose">Nouvelle course</button></div>
   </div>
 
-  <div id="launch"><div class="wipe"></div><div class="lstreaks" id="lStreaks"></div><div class="lcar"></div><div class="ltxt"><b>C'EST PARTI</b><span id="lSub"></span></div></div>
+  <div id="launch"><div class="wipe"></div><div class="solid"></div><div class="lstreaks" id="lStreaks"></div><div class="lcar"></div><div class="ltxt"><b>C'EST PARTI</b><span id="lSub"></span></div></div>
 </div>
 
 <script>
 (()=>{
 'use strict';
-const VERSION='1.1.0';
+const VERSION='1.2.0';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 
@@ -534,9 +541,9 @@ function roll(el,str){
   if(el.dataset.shape!==shape){
     el.innerHTML='';
     ch.forEach(c=>{if(/\d/.test(c)){const d=document.createElement('span');d.className='dg enter';const st=document.createElement('span');st.className='st';for(let i=0;i<10;i++){const b=document.createElement('b');b.textContent=i;st.appendChild(b)}d.appendChild(st);el.appendChild(d)}else{const s=document.createElement('span');s.className='sep';s.textContent=c;el.appendChild(s)}});
-    el.dataset.shape=shape;void el.offsetWidth;
+    el.dataset.shape=shape;const nd=shape.split('d').length-1;if(el.id==='roll')el.style.fontSize=nd>=6?'54px':nd===5?'66px':'';void el.offsetWidth;
   }
-  ch.forEach((c,i)=>{if(/\d/.test(c))el.children[i].firstChild.style.transform=`translateY(${-c}em)`});
+  ch.forEach((c,i)=>{if(/\d/.test(c))el.children[i].firstChild.style.transform=`translateY(${-c*1.04}em)`});
   el.dataset.v=str;
 }
 
@@ -558,14 +565,16 @@ function onFix(lat,lng,acc,spd,t){
   if(!ride.anchor){ride.anchor=cur;addPath(cur);paintGps();return}
   const d=hav(ride.anchor,cur),dt=Math.max((t-ride.anchor.t)/1000,.3);
   const thr=Math.max(4,Math.min(acc,25)*.6);
-  if(d<thr){if(!gps.hasSpeed&&dt>3)gps.speed=0;paintGps();return}
+  if(d<thr){resolveGap(0);if(!gps.hasSpeed&&dt>3)gps.speed=0;paintGps();return}
   const v=d/dt;
+  resolveGap(v*3.6);
   if(v>70){ride.anchor=cur;paintGps();return}
   ride.distM+=d;ride.anchor=cur;
   if(!gps.hasSpeed)gps.speed=v*3.6;
   ride.maxKmh=Math.max(ride.maxKmh||0,gps.speed);
   addPath(cur);paintGps();
 }
+function resolveGap(kmh){if(ride&&ride.pendGap){if(kmh<ride.waitThr)ride.waitS+=ride.pendGap;ride.pendGap=0}}
 function addPath(p){const P=ride.path,l=P[P.length-1];if(!l||hav({lat:l[0],lng:l[1]},p)>6){P.push([+p.lat.toFixed(6),+p.lng.toFixed(6)]);if(P.length>3000)ride.path=P.filter((_,i)=>i%2===0||i===P.length-1);traceDirty=true}}
 function paintGps(){
   const pill=$('#gpsPill'),txt=$('#gpsTxt');pill.className='pill';
@@ -604,6 +613,32 @@ function stopGps(){
   gps.watchId=null;
 }
 function showPerm(v){$('#perm').classList.toggle('show',v)}
+
+/* Suivi GPS en arrière-plan pendant une course (service avec notification) */
+let bgId=null,bgBusy=false,bgFailed=false,launching=false;
+async function askNotif(){const LN=plug('LocalNotifications');if(!LN)return;try{const p=await LN.checkPermissions();if(p.display!=='granted')await LN.requestPermissions()}catch(e){}}
+async function syncBg(){
+  const BG=plug('BackgroundGeolocation');if(!BG||bgBusy||launching)return;
+  const want=!!(ride&&ride.status==='running'&&!S.demo&&!bgFailed);
+  if(want&&bgId==null){
+    bgBusy=true;
+    try{
+      await askNotif();
+      stopGps();
+      bgId=await BG.addWatcher({backgroundTitle:'Taximètre · course en cours',backgroundMessage:'Le compteur continue de mesurer le trajet.',requestPermissions:true,stale:false,distanceFilter:0},(loc,err)=>{
+        if(err){if(err.code==='NOT_AUTHORIZED'){gps.state='denied';showPerm(true);paintGps()}return}
+        if(loc)onFix(loc.latitude,loc.longitude,loc.accuracy==null?20:loc.accuracy,loc.speed,loc.time||Date.now());
+      });
+    }catch(e){bgId=null;bgFailed=true;startGps(false)}
+    bgBusy=false;
+  }else if(!want&&bgId!=null){
+    bgBusy=true;const id=bgId;bgId=null;
+    try{await BG.removeWatcher({id})}catch(e){}
+    bgBusy=false;startGps(false);
+  }
+  const now=!!(ride&&ride.status==='running'&&!S.demo&&!bgFailed);
+  if(now!==(bgId!=null))syncBg();
+}
 const demo={lat:50.4108,lng:4.4446,hdg:70,v:0,t:0};
 function startDemo(){
   if(gps.last){demo.lat=gps.last.lat;demo.lng=gps.last.lng}
@@ -625,15 +660,20 @@ function startRide(){
   const now=Date.now();
   ride={id:now,status:'running',tariff,rates:Object.assign({},S[tariff]),minFare:S.minFare,waitThr:S.waitThr,cur:S.cur,startedAt:now,activeMs:0,distM:0,waitS:0,path:[],anchor:null,maxKmh:0,lastTick:now};
   if(gps.last)addPath(Object.assign({t:now},gps.last));
-  traceDirty=true;setAwake(true);launch();persist();paintState();
+  launching=true;launch();
+  // le travail lourd attend que l'écran soit couvert, puis la fin de l'animation
+  setTimeout(()=>{traceDirty=true;persist();paintState()},1000);
+  setTimeout(()=>{launching=false;setAwake(true);syncBg()},1900);
 }
 function pauseRide(){
   if(!ride)return;
-  if(ride.status==='running'){ride.status='paused';ride.anchor=null}else{ride.status='running';ride.lastTick=Date.now()}
+  if(ride.status==='running'){tick();if(ride.pendGap){ride.waitS+=ride.pendGap;ride.pendGap=0}ride.status='paused';ride.anchor=null}else{ride.status='running';ride.lastTick=Date.now()}
   buzz('medium');persist();paintState();
 }
 function finishRide(){
   if(!ride)return;
+  if(ride.status==='running')tick();
+  if(ride.pendGap){ride.waitS+=ride.pendGap;ride.pendGap=0}
   const f=fareOf(ride);
   const rec={id:ride.id,start:ride.startedAt,end:Date.now(),tariff:ride.tariff,rates:ride.rates,minFare:ride.minFare,cur:ride.cur,activeMs:ride.activeMs,distM:ride.distM,waitS:ride.waitS,maxKmh:ride.maxKmh,path:ride.path,total:f.total};
   history.unshift(rec);if(history.length>500)history.length=500;
@@ -652,11 +692,12 @@ async function setAwake(on){
 /* Launch animation */
 function launch(){
   const L=$('#launch'),b=$('#bStart').getBoundingClientRect();
-  L.style.setProperty('--x',(b.left+b.width/2)+'px');L.style.setProperty('--y',(b.top+b.height/2)+'px');
+  const x=b.left+b.width/2,y=b.top+b.height/2,W=innerWidth,H=innerHeight;
+  L.style.setProperty('--x',x+'px');L.style.setProperty('--y',y+'px');L.style.setProperty('--s',((Math.hypot(Math.max(x,W-x),Math.max(y,H-y))+40)/60).toFixed(2));
   $('#lSub').textContent=(ride.tariff==='t2'?'Tarif nuit':'Tarif jour')+' · '+money(ride.rates.km)+' '+S.cur+'/km';
   const st=$('#lStreaks');st.innerHTML='';
   for(let i=0;i<12;i++){const e=document.createElement('i');e.style.top=(Math.random()*140)+'px';e.style.width=(60+Math.random()*200)+'px';e.style.animationDelay=(.25+Math.random()*.5)+'s';st.appendChild(e)}
-  L.classList.remove('go');void L.offsetWidth;L.classList.add('go');
+  L.classList.remove('go');requestAnimationFrame(()=>requestAnimationFrame(()=>L.classList.add('go')));
   buzz('heavy');setTimeout(()=>buzz('medium'),560);
   setTimeout(()=>{const h=$('#hero');h.classList.remove('pop');void h.offsetWidth;h.classList.add('pop')},1300);
   setTimeout(()=>L.classList.remove('go'),1950);
@@ -668,8 +709,9 @@ function tick(){
   const now=Date.now();
   if(!gps.lastFix||now-gps.lastFix>5000)gps.speed=0;
   if(ride&&ride.status==='running'){
-    const dt=Math.min(now-ride.lastTick,5000);ride.activeMs+=dt;
-    if(gps.speed<ride.waitThr)ride.waitS+=dt/1000;
+    const dt=Math.max(0,now-ride.lastTick);ride.activeMs+=dt;
+    if(dt>2500)ride.pendGap=(ride.pendGap||0)+dt/1000;
+    else if(gps.speed<ride.waitThr)ride.waitS+=dt/1000;
     ride.lastTick=now;
     if(now-lastPersist>3000){persist();lastPersist=now}
   }
@@ -708,7 +750,7 @@ function frame(now){
   if(activeTab==='meter'&&document.body.classList.contains('ready')){
     const v=moving?Math.min(gps.speed,130):0;
     laneX-=v*4.2*dt;if(laneX<-52)laneX+=52;
-    $('#lane').style.backgroundPosition=laneX.toFixed(1)+'px 0';
+    $('#lane').style.transform='translate3d('+laneX.toFixed(1)+'px,0,0)';
     if(moving!==slOn){slOn=moving;$('#sl').style.opacity=moving?.9:0;$('#taxi').classList.toggle('move',moving);$('#taxi').style.transform=moving?'translateX(14px)':'translateX(0)'}
   }
   requestAnimationFrame(frame);
@@ -722,6 +764,7 @@ function paintState(){
   if(inride){const pb=$('#bPause');pb.querySelector('span').textContent=ride.status==='paused'?'REPRENDRE':'PAUSE';pb.querySelector('svg').innerHTML=ride.status==='paused'?IC.play:IC.pause}
   $('#seg').dataset.v=inride?ride.tariff:tariff;
   slOn=null;traceDirty=true;lastKey='';lastRate='';
+  syncBg();
 }
 function setTariff(t){
   if(ride){shake($('#seg'));buzz('medium');return}
@@ -883,7 +926,7 @@ $('#setForm').addEventListener('keydown',e=>{if(e.key==='Enter')e.target.blur()}
 $('#setForm').addEventListener('click',e=>{
   const tg=e.target.closest('[data-tg]');
   if(tg){const k=tg.dataset.tg;S[k]=!S[k];saveS();tg.querySelector('.sw').classList.toggle('on',S[k]);buzz();
-    if(k==='demo'){if(ride)ride.anchor=null;gps.lastFix=0;startGps(false)}
+    if(k==='demo'){if(ride)ride.anchor=null;gps.lastFix=0;if(bgId==null)startGps(false);syncBg()}
     if(k==='keepAwake'&&ride)setAwake(S[k]);return}
   const ch=e.target.closest('#clearH');
   if(ch){if(ch.dataset.armed){history=[];store.set('tx_history',[]);renderHistory();renderSettings();buzz('heavy')}else{ch.dataset.armed=1;ch.querySelector('span').textContent='Appuie encore pour confirmer';buzz('medium');setTimeout(()=>ch.isConnected&&renderSettings(),2600)}return}
@@ -908,7 +951,7 @@ function setupNative(){
       if(activeTab!=='meter')return go('meter');
       A.minimizeApp();
     });
-    A.addListener('appStateChange',s=>{if(s.isActive){traceDirty=true;paintGps()}else persist()});
+    A.addListener('appStateChange',s=>{if(s.isActive){tick();traceDirty=true;paintGps()}else{tick();persist()}});
   }
   const SB=plug('StatusBar');if(SB){SB.setStyle({style:'DARK'}).catch(()=>{});SB.setBackgroundColor&&SB.setBackgroundColor({color:'#09090B'}).catch(()=>{})}
   const SP=plug('SplashScreen');if(SP)SP.hide({fadeOutDuration:150}).catch(()=>{});
@@ -936,6 +979,7 @@ function boot(){
   if(act&&act.rates)ride=Object.assign(act,{status:'paused',anchor:null,lastTick:Date.now()});
   renderSettings();renderHistory();paintState();paintMeter();splash();
   setInterval(tick,250);startGps(true);
+  document.addEventListener('visibilitychange',()=>{tick();if(document.hidden)persist()});
   window.addEventListener('resize',()=>traceDirty=true);
 }
 boot();
