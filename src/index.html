@@ -35,8 +35,8 @@
   --grad:linear-gradient(135deg,#FFE27A 0%,#FFC400 42%,#FF9500 100%);
   --sat:max(var(--safe-area-inset-top,0px),env(safe-area-inset-top,0px),var(--sat-fb,0px));
   --sab:max(var(--safe-area-inset-bottom,0px),env(safe-area-inset-bottom,0px),var(--sab-fb,0px));
-  --navH:74px;
-  --navGap:14px;
+  --navH:62px;
+  --navGap:12px;
   --rXL:32px;--rL:26px;--rM:20px;--rS:15px;
   --ease:cubic-bezier(.2,.8,.2,1);
   --spring:cubic-bezier(.34,1.56,.64,1);
@@ -83,7 +83,7 @@ body.ready #app{opacity:1}
 .screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:calc(var(--sat) + 8px) 16px calc(var(--sab) + var(--navH) + var(--navGap) + 28px);opacity:0;pointer-events:none;transform:translateX(var(--from,24px));transition:opacity .38s var(--ease),transform .45s var(--ease);scrollbar-width:none}
 .screen::-webkit-scrollbar{display:none}
 .screen.active{opacity:1;transform:none;pointer-events:auto}
-#meter{padding-bottom:calc(var(--sab) + var(--navH) + var(--navGap) + 112px)}
+#meter{padding-bottom:calc(var(--sab) + var(--navH) + var(--navGap) + 24px)}
 body.ready .reveal{animation:rise .7s var(--ease) both}
 @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 
@@ -202,12 +202,11 @@ body.inride .seg-wrap{grid-template-rows:0fr;opacity:0;margin-top:0}
 .perm button{height:46px;padding:0 18px;border-radius:15px;background:var(--red);color:#fff;font-weight:800;font-size:14px}
 
 /* actions */
-#actions{position:fixed;left:16px;right:16px;bottom:calc(var(--sab) + var(--navGap) + var(--navH) + 12px);display:flex;gap:10px;z-index:20;transition:opacity .35s var(--ease),transform .45s var(--ease)}
-body:not(.tab-meter) #actions,body.kb #actions{opacity:0;transform:translateY(20px);pointer-events:none}
-.btn{position:relative;height:68px;border-radius:24px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:17px;font-weight:800;letter-spacing:.05em;overflow:hidden;transition:transform .2s var(--ease),flex .5s var(--spring),opacity .3s,background .3s}
+#actions{position:relative;display:flex;gap:8px;margin-top:12px}
+.btn{position:relative;height:50px;border-radius:17px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:800;letter-spacing:.05em;overflow:hidden;transition:transform .2s var(--ease),flex .5s var(--spring),opacity .3s,background .3s}
 .btn:active,.btn.press{transform:scale(.965)}
-.btn svg{width:23px;height:23px}
-.btn.primary{flex:1;background:var(--grad);color:var(--ink);box-shadow:0 12px 34px rgba(255,170,0,.32),inset 0 1px 0 rgba(255,255,255,.55)}
+.btn svg{width:18px;height:18px}
+.btn.primary{flex:1;background:var(--grad);color:var(--ink);box-shadow:0 8px 22px rgba(255,170,0,.25),inset 0 1px 0 rgba(255,255,255,.55)}
 .btn.primary::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);background-size:250% 100%;background-position:130% 0;animation:sheen 3.5s 1s infinite}
 @keyframes sheen{0%,60%{background-position:130% 0}100%{background-position:-30% 0}}
 .btn.ghost{flex:1;background:rgba(36,36,41,.94);border:1px solid var(--line2);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
@@ -215,19 +214,19 @@ body:not(.tab-meter) #actions,body.kb #actions{opacity:0;transform:translateY(20
 .btn.stop .fill{position:absolute;inset:0;background:linear-gradient(90deg,#FF453A,#FF6B5E);transform:scaleX(var(--p,0));transform-origin:left}
 .btn.stop .lbl{position:relative;display:flex;align-items:center;gap:9px}
 .btn.stop.full{color:#fff}
-.btn.hide{flex:0 0 0;opacity:0;padding:0;margin:0 -5px;pointer-events:none;border-width:0}
+.btn.hide{flex:0 0 0;opacity:0;padding:0;margin:0 -4px;pointer-events:none;border-width:0;overflow:hidden}
 .hint{position:absolute;bottom:calc(100% + 8px);right:0;font-size:13px;font-weight:700;color:var(--text);background:var(--s3);border:1px solid var(--line2);padding:8px 12px;border-radius:12px;opacity:0;transform:translateY(6px);transition:.3s var(--ease);pointer-events:none}
 .hint.show{opacity:1;transform:none}
 
 /* nav */
-#nav{position:fixed;left:16px;right:16px;bottom:calc(var(--sab) + var(--navGap));height:var(--navH);border-radius:28px;background:rgba(22,22,26,.92);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border:1px solid var(--line2);box-shadow:0 18px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);display:grid;grid-template-columns:repeat(3,1fr);padding:7px;z-index:30;transition:transform .5s var(--ease),opacity .4s}
+#nav{position:fixed;left:16px;right:16px;bottom:calc(var(--sab) + var(--navGap));height:var(--navH);border-radius:24px;background:rgba(22,22,26,.92);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border:1px solid var(--line2);box-shadow:0 18px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);display:grid;grid-template-columns:repeat(3,1fr);padding:6px;z-index:30;transition:transform .5s var(--ease),opacity .4s}
 body.kb #nav{transform:translateY(140%);opacity:0}
-#nav .ind{position:absolute;top:7px;bottom:7px;left:7px;width:calc((100% - 14px)/3);border-radius:21px;background:linear-gradient(180deg,rgba(255,196,0,.18),rgba(255,196,0,.06));border:1px solid rgba(255,196,0,.25);transition:transform .5s var(--spring)}
-#nav button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:800;color:var(--dim);transition:color .3s;min-height:44px}
-#nav button svg{width:24px;height:24px;transition:transform .45s var(--spring)}
+#nav .ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/3);border-radius:18px;background:linear-gradient(180deg,rgba(255,196,0,.18),rgba(255,196,0,.06));border:1px solid rgba(255,196,0,.25);transition:transform .5s var(--spring)}
+#nav button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:800;color:var(--dim);transition:color .3s;min-height:44px}
+#nav button svg{width:21px;height:21px;transition:transform .45s var(--spring)}
 #nav button.on{color:var(--accent)}
 #nav button.on svg{transform:translateY(-1px) scale(1.08)}
-#nav button .badge{position:absolute;top:8px;left:calc(50% + 9px);width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(22,22,26,1);transform:scale(0);transition:transform .4s var(--spring)}
+#nav button .badge{position:absolute;top:5px;left:calc(50% + 9px);width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(22,22,26,1);transform:scale(0);transition:transform .4s var(--spring)}
 body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:blink 1.2s infinite}
 
 /* ===== LAUNCH ===== */
@@ -401,6 +400,12 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
         <div><span>Distance</span><b id="sKm">0,00</b></div>
         <div><span>Attente</span><b id="sWait">0,00</b></div>
       </div>
+      <div id="actions">
+        <button class="btn primary" id="bStart"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.4-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg><span>DÉMARRER</span></button>
+        <button class="btn ghost hide" id="bPause"><svg viewBox="0 0 24 24" fill="currentColor"></svg><span>PAUSE</span></button>
+        <button class="btn stop hide" id="bStop"><div class="fill"></div><div class="lbl"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="2.5"/></svg>TERMINER</div></button>
+        <div class="hint" id="hint">Maintiens pour terminer</div>
+      </div>
     </div>
 
     <div class="seg-wrap reveal" style="animation-delay:.12s"><div>
@@ -460,12 +465,6 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
     <div class="about"><div class="brand"></div><span>Taximètre · v<span id="ver"></span></span></div>
   </section>
 
-  <div id="actions">
-    <button class="btn primary" id="bStart"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.4-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg><span>DÉMARRER</span></button>
-    <button class="btn ghost hide" id="bPause"><svg viewBox="0 0 24 24" fill="currentColor"></svg><span>PAUSE</span></button>
-    <button class="btn stop hide" id="bStop"><div class="fill"></div><div class="lbl"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="2.5"/></svg>TERMINER</div></button>
-    <div class="hint" id="hint">Maintiens pour terminer</div>
-  </div>
 
   <nav id="nav">
     <div class="ind" id="ind"></div>
@@ -485,7 +484,7 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
 <script>
 (()=>{
 'use strict';
-const VERSION='1.2.0';
+const VERSION='1.2.1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 
