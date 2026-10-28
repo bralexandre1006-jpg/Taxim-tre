@@ -150,6 +150,9 @@ body.running .road .flag{color:var(--accent)}
 body.running .road .glow{opacity:1}
 
 .brk{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+body.nowait .brk{grid-template-columns:repeat(2,1fr)}
+body.nowait .w{display:none!important}
+body.nowait .gstats{gap:10px}
 .brk div{padding:10px 12px;border-radius:var(--rS);background:rgba(255,255,255,.04);min-width:0}
 .brk span{display:block;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brk b{display:block;margin-top:3px;font-family:var(--num);font-size:19px;font-weight:700}
@@ -398,7 +401,7 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
       <div class="brk">
         <div><span>Prise en charge</span><b id="sBase">0,00</b></div>
         <div><span>Distance</span><b id="sKm">0,00</b></div>
-        <div><span>Attente</span><b id="sWait">0,00</b></div>
+        <div class="w"><span>Attente</span><b id="sWait">0,00</b></div>
       </div>
       <div id="actions">
         <button class="btn primary" id="bStart"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.4-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg><span>DÉMARRER</span></button>
@@ -431,7 +434,7 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
       <div class="gstats">
         <div class="gs"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div><div><small>Distance</small><b><span id="vDist">0,00</span><em>km</em></b></div></div>
         <div class="gs"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></div><div><small>Durée</small><b id="vTime">00:00</b></div></div>
-        <div class="gs"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></div><div><small>Attente</small><b id="vWait">00:00</b></div></div>
+        <div class="gs w"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></div><div><small>Attente</small><b id="vWait">00:00</b></div></div>
       </div>
     </div>
 
@@ -484,7 +487,7 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
 <script>
 (()=>{
 'use strict';
-const VERSION='1.2.1';
+const VERSION='1.2.2';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 
@@ -494,7 +497,7 @@ function plug(n){const C=window.Capacitor;if(!C||!C.isNativePlatform||!C.isNativ
 const isNative=()=>!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
 
 /* Settings */
-const DEF={t1:{base:2.40,km:1.80,wait:30},t2:{base:4.40,km:2.70,wait:30},minFare:0,waitThr:10,cur:'€',keepAwake:true,haptics:true,autoNight:true,demo:false};
+const DEF={t1:{base:2.40,km:1.80,wait:30},t2:{base:4.40,km:2.70,wait:30},minFare:0,waitThr:10,cur:'€',keepAwake:true,haptics:true,autoNight:true,demo:false,waitOn:true};
 let S=Object.assign({},DEF,store.get('tx_settings',{}));
 S.t1=Object.assign({},DEF.t1,S.t1);S.t2=Object.assign({},DEF.t2,S.t2);
 const saveS=()=>store.set('tx_settings',S);
@@ -573,7 +576,8 @@ function onFix(lat,lng,acc,spd,t){
   ride.maxKmh=Math.max(ride.maxKmh||0,gps.speed);
   addPath(cur);paintGps();
 }
-function resolveGap(kmh){if(ride&&ride.pendGap){if(kmh<ride.waitThr)ride.waitS+=ride.pendGap;ride.pendGap=0}}
+const wOn=r=>!!r&&r.waitOn!==false;
+function resolveGap(kmh){if(ride&&ride.pendGap){if(wOn(ride)&&kmh<ride.waitThr)ride.waitS+=ride.pendGap;ride.pendGap=0}}
 function addPath(p){const P=ride.path,l=P[P.length-1];if(!l||hav({lat:l[0],lng:l[1]},p)>6){P.push([+p.lat.toFixed(6),+p.lng.toFixed(6)]);if(P.length>3000)ride.path=P.filter((_,i)=>i%2===0||i===P.length-1);traceDirty=true}}
 function paintGps(){
   const pill=$('#gpsPill'),txt=$('#gpsTxt');pill.className='pill';
@@ -657,7 +661,7 @@ function autoTariff(){if(!S.autoNight)return;const h=new Date().getHours();tarif
 function startRide(){
   autoTariff();
   const now=Date.now();
-  ride={id:now,status:'running',tariff,rates:Object.assign({},S[tariff]),minFare:S.minFare,waitThr:S.waitThr,cur:S.cur,startedAt:now,activeMs:0,distM:0,waitS:0,path:[],anchor:null,maxKmh:0,lastTick:now};
+  ride={id:now,status:'running',tariff,rates:Object.assign({},S[tariff]),minFare:S.minFare,waitThr:S.waitThr,waitOn:S.waitOn!==false,cur:S.cur,startedAt:now,activeMs:0,distM:0,waitS:0,path:[],anchor:null,maxKmh:0,lastTick:now};
   if(gps.last)addPath(Object.assign({t:now},gps.last));
   launching=true;launch();
   // le travail lourd attend que l'écran soit couvert, puis la fin de l'animation
@@ -666,15 +670,15 @@ function startRide(){
 }
 function pauseRide(){
   if(!ride)return;
-  if(ride.status==='running'){tick();if(ride.pendGap){ride.waitS+=ride.pendGap;ride.pendGap=0}ride.status='paused';ride.anchor=null}else{ride.status='running';ride.lastTick=Date.now()}
+  if(ride.status==='running'){tick();if(ride.pendGap){if(wOn(ride))ride.waitS+=ride.pendGap;ride.pendGap=0}ride.status='paused';ride.anchor=null}else{ride.status='running';ride.lastTick=Date.now()}
   buzz('medium');persist();paintState();
 }
 function finishRide(){
   if(!ride)return;
   if(ride.status==='running')tick();
-  if(ride.pendGap){ride.waitS+=ride.pendGap;ride.pendGap=0}
+  if(ride.pendGap){if(wOn(ride))ride.waitS+=ride.pendGap;ride.pendGap=0}
   const f=fareOf(ride);
-  const rec={id:ride.id,start:ride.startedAt,end:Date.now(),tariff:ride.tariff,rates:ride.rates,minFare:ride.minFare,cur:ride.cur,activeMs:ride.activeMs,distM:ride.distM,waitS:ride.waitS,maxKmh:ride.maxKmh,path:ride.path,total:f.total};
+  const rec={id:ride.id,start:ride.startedAt,end:Date.now(),tariff:ride.tariff,rates:ride.rates,minFare:ride.minFare,cur:ride.cur,waitOn:wOn(ride),activeMs:ride.activeMs,distM:ride.distM,waitS:ride.waitS,maxKmh:ride.maxKmh,path:ride.path,total:f.total};
   history.unshift(rec);if(history.length>500)history.length=500;
   store.set('tx_history',history);store.del('tx_active');
   ride=null;setAwake(false);buzz('success');
@@ -710,7 +714,7 @@ function tick(){
   if(ride&&ride.status==='running'){
     const dt=Math.max(0,now-ride.lastTick);ride.activeMs+=dt;
     if(dt>2500)ride.pendGap=(ride.pendGap||0)+dt/1000;
-    else if(gps.speed<ride.waitThr)ride.waitS+=dt/1000;
+    else if(wOn(ride)&&gps.speed<ride.waitThr)ride.waitS+=dt/1000;
     ride.lastTick=now;
     if(now-lastPersist>3000){persist();lastPersist=now}
   }
@@ -728,7 +732,7 @@ function paintMeter(){
   const rk=t+rates.km+S.cur;
   if(rk!==lastRate){const el=$('#rate');el.className='rate'+(t==='t2'?' n':'');el.innerHTML=tIcon(t)+'<span><b>'+money(rates.km)+' '+S.cur+'</b>/km</span>';lastRate=rk}
   let st='LIBRE',cls='',fl='PRÊT À DÉMARRER';
-  if(r){if(r.status==='paused'){st='PAUSE';cls='pause';fl='COMPTEUR EN PAUSE'}else if(sp<r.waitThr&&r.activeMs>2000){st='ATTENTE';cls='wait';fl='TEMPS D\'ATTENTE FACTURÉ'}else{st='EN COURSE';cls='run';fl='DISTANCE FACTURÉE'}}
+  if(r){if(r.status==='paused'){st='PAUSE';cls='pause';fl='COMPTEUR EN PAUSE'}else if(wOn(r)&&sp<r.waitThr&&r.activeMs>2000){st='ATTENTE';cls='wait';fl='TEMPS D\'ATTENTE FACTURÉ'}else{st='EN COURSE';cls='run';fl='DISTANCE FACTURÉE'}}
   if(st+cls!==lastKey){$('#status').className='status '+cls;$('#statusTxt').textContent=st;$('#flag').textContent=fl;lastKey=st+cls}
   if(Date.now()-gps.lastFix>15000&&!S.demo&&gps.state!=='denied')paintGps();
 }
@@ -823,7 +827,7 @@ function billHTML(r){
   return `<div class="bill">
     <div><span>Prise en charge</span><b>${money(f.base)} ${c}</b></div>
     <div><span>Distance<em>${km(r.distM)} km × ${money(r.rates.km)} ${c}</em></span><b>${money(f.kmC)} ${c}</b></div>
-    <div><span>Attente<em>${durLong(r.waitS*1000)} × ${money(r.rates.wait)} ${c}/h</em></span><b>${money(f.waitC)} ${c}</b></div>
+    ${r.waitOn===false?'':`<div><span>Attente<em>${durLong(r.waitS*1000)} × ${money(r.rates.wait)} ${c}/h</em></span><b>${money(f.waitC)} ${c}</b></div>`}
     ${f.minApplied?`<div><span>Course minimum</span><b>${money(r.minFare)} ${c}</b></div>`:''}
     <div class="tot"><span>Total</span><b>${money(r.total)} ${c}</b></div></div>`;
 }
@@ -880,7 +884,7 @@ $('#rcShare').addEventListener('click',()=>rcRec&&shareRec(rcRec,$('#rcShare')))
 
 async function shareRec(r,btn){
   const f=recFare(r),c=r.cur||S.cur,d=new Date(r.start);
-  const text=`🚕 TAXIMÈTRE · REÇU\n${d.toLocaleDateString('fr-BE')} · ${hhmm(r.start)} → ${hhmm(r.end)}\n\nDistance : ${km(r.distM)} km\nDurée : ${durLong(r.activeMs)}\nAttente : ${durLong(r.waitS*1000)}\nTarif : ${r.tariff==='t2'?'Nuit (T2)':'Jour (T1)'}\n\nPrise en charge : ${money(f.base)} ${c}\nDistance : ${money(f.kmC)} ${c}\nAttente : ${money(f.waitC)} ${c}${f.minApplied?`\nCourse minimum : ${money(r.minFare)} ${c}`:''}\n━━━━━━━━━━━━━━\nTOTAL : ${money(r.total)} ${c}`;
+  const text=`🚕 TAXIMÈTRE · REÇU\n${d.toLocaleDateString('fr-BE')} · ${hhmm(r.start)} → ${hhmm(r.end)}\n\nDistance : ${km(r.distM)} km\nDurée : ${durLong(r.activeMs)}${r.waitOn===false?'':`\nAttente : ${durLong(r.waitS*1000)}`}\nTarif : ${r.tariff==='t2'?'Nuit (T2)':'Jour (T1)'}\n\nPrise en charge : ${money(f.base)} ${c}\nDistance : ${money(f.kmC)} ${c}${r.waitOn===false?'':`\nAttente : ${money(f.waitC)} ${c}`}${f.minApplied?`\nCourse minimum : ${money(r.minFare)} ${c}`:''}\n━━━━━━━━━━━━━━\nTOTAL : ${money(r.total)} ${c}`;
   const Sh=plug('Share');
   try{
     if(Sh){await Sh.share({title:'Reçu de course',text,dialogTitle:'Partager le reçu'});return}
@@ -892,12 +896,13 @@ async function shareRec(r,btn){
 
 /* Settings */
 const FORM=[
-  {title:'Tarif jour · T1',icon:'sun',fields:[['t1.base','Prise en charge','','{c}'],['t1.km','Prix au kilomètre','','{c}/km'],['t1.wait','Attente','Sous le seuil de vitesse','{c}/h']]},
-  {title:'Tarif nuit · T2',icon:'moon',fields:[['t2.base','Prise en charge','','{c}'],['t2.km','Prix au kilomètre','','{c}/km'],['t2.wait','Attente','','{c}/h']]},
-  {title:'Compteur',icon:'gauge',fields:[['minFare','Course minimum','0 = désactivé','{c}'],['waitThr','Seuil d\'attente','En dessous, le temps est facturé','km/h'],['cur','Devise','','',1]]},
+  {title:'Tarif jour · T1',icon:'sun',fields:[['t1.base','Prise en charge','','{c}'],['t1.km','Prix au kilomètre','','{c}/km'],['t1.wait','Attente','Sous le seuil de vitesse','{c}/h',0,1]]},
+  {title:'Tarif nuit · T2',icon:'moon',fields:[['t2.base','Prise en charge','','{c}'],['t2.km','Prix au kilomètre','','{c}/km'],['t2.wait','Attente','','{c}/h',0,1]]},
+  {title:'Compteur',icon:'gauge',fields:[['minFare','Course minimum','0 = désactivé','{c}'],['cur','Devise','','',1]]},
+  {title:'Attente',icon:'pause',toggles:[['waitOn','Facturer l\'attente','Temps facturé quand le taxi est à l\'arrêt']],fields:[['waitThr','Seuil d\'attente','En dessous, le temps est facturé','km/h',0,1]]},
   {title:'Options',icon:'opt',toggles:[['autoNight','Tarif nuit automatique','De 22 h à 6 h'],['keepAwake','Écran toujours allumé','Pendant une course'],['haptics','Vibrations',''],['demo','Mode démo','Simule un trajet sans rouler']]}
 ];
-const SI={sun:IC.sun,moon:IC.moon,gauge:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3.3 19a10 10 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/></svg>',opt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>',data:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>'};
+const SI={pause:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg>',sun:IC.sun,moon:IC.moon,gauge:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3.3 19a10 10 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/></svg>',opt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>',data:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>'};
 const fmtIn=(k,v)=>/base|km|minFare/.test(k)?Number(v).toFixed(2).replace('.',','):String(v).replace('.',',');
 const getK=k=>k.split('.').reduce((o,p)=>o[p],S);
 function setK(k,v){const p=k.split('.');if(p.length===2)S[p[0]][p[1]]=v;else S[k]=v;saveS()}
@@ -905,9 +910,9 @@ function renderSettings(){
   let h='';
   FORM.forEach(sec=>{
     h+=`<div class="sec"><h3>${SI[sec.icon]}${sec.title}</h3><div class="card">`;
-    (sec.fields||[]).forEach(([k,l,sub,unit,txt])=>{const v=getK(k);
-      h+=`<div class="field"><label for="f_${k}">${l}${sub?`<small>${sub}</small>`:''}</label><div class="inp"><input id="f_${k}" data-k="${k}" type="text" ${txt?'maxlength="3" style="width:48px"':'inputmode="decimal"'} value="${txt?v:fmtIn(k,v)}" autocomplete="off">${unit?`<i>${unit.replace('{c}',S.cur)}</i>`:''}</div></div>`});
-    (sec.toggles||[]).forEach(([k,l,sub])=>{h+=`<button class="field tap" data-tg="${k}"><label>${l}${sub?`<small>${sub}</small>`:''}</label><span class="sw ${S[k]?'on':''}"></span></button>`});
+    (sec.toggles||[]).forEach(([k,l,sub])=>{h+=`<button class="field tap" data-tg="${k}"><label>${l}${sub?`<small>${sub}</small>`:''}</label><span class="sw ${S[k]!==false&&S[k]?'on':''}"></span></button>`});
+    (sec.fields||[]).forEach(([k,l,sub,unit,txt,wf])=>{const v=getK(k);
+      h+=`<div class="field${wf?' w':''}"><label for="f_${k}">${l}${sub?`<small>${sub}</small>`:''}</label><div class="inp"><input id="f_${k}" data-k="${k}" type="text" ${txt?'maxlength="3" style="width:48px"':'inputmode="decimal"'} value="${txt?v:fmtIn(k,v)}" autocomplete="off">${unit?`<i>${unit.replace('{c}',S.cur)}</i>`:''}</div></div>`});
     h+='</div></div>';
   });
   h+=`<div class="sec"><h3>${SI.data}Données</h3><div class="card"><button class="field tap" id="clearH"><label class="danger"><span>Effacer l'historique</span><small>${history.length} course(s) enregistrée(s)</small></label></button><button class="field tap" id="resetS"><label><span>Rétablir les tarifs par défaut</span></label></button></div></div>`;
@@ -926,7 +931,8 @@ $('#setForm').addEventListener('click',e=>{
   const tg=e.target.closest('[data-tg]');
   if(tg){const k=tg.dataset.tg;S[k]=!S[k];saveS();tg.querySelector('.sw').classList.toggle('on',S[k]);buzz();
     if(k==='demo'){if(ride)ride.anchor=null;gps.lastFix=0;if(bgId==null)startGps(false);syncBg()}
-    if(k==='keepAwake'&&ride)setAwake(S[k]);return}
+    if(k==='keepAwake'&&ride)setAwake(S[k]);
+    if(k==='waitOn'){applyWait();if(ride){ride.waitOn=S.waitOn;persist()}lastKey='';paintMeter()}return}
   const ch=e.target.closest('#clearH');
   if(ch){if(ch.dataset.armed){history=[];store.set('tx_history',[]);renderHistory();renderSettings();buzz('heavy')}else{ch.dataset.armed=1;ch.querySelector('span').textContent='Appuie encore pour confirmer';buzz('medium');setTimeout(()=>ch.isConnected&&renderSettings(),2600)}return}
   if(e.target.closest('#resetS')){S.t1=Object.assign({},DEF.t1);S.t2=Object.assign({},DEF.t2);S.minFare=0;S.waitThr=10;saveS();renderSettings();lastRate='';paintMeter();buzz('success')}
@@ -971,7 +977,9 @@ function splash(){
 }
 
 /* Boot */
+function applyWait(){document.body.classList.toggle('nowait',S.waitOn===false)}
 function boot(){
+  applyWait();
   $('#ver').textContent=VERSION;$('#curSym').textContent=S.cur;
   insetFallback();setupNative();
   const act=store.get('tx_active',null);
