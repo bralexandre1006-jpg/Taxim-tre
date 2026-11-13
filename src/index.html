@@ -385,6 +385,39 @@ body.bkwait #nav button[data-tab="booking"] .badge{transform:scale(1)}
 .bk-out{display:block;margin:26px auto 0;padding:12px 18px;font-size:14px;font-weight:800;color:var(--dim)}
 .bk-sep{margin:28px 6px 4px;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
 
+.bk-sum{grid-template-columns:repeat(4,1fr);gap:8px}
+.bk-sum button{padding:13px 11px}
+.bk-sum b{font-size:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk-sum .d{background:linear-gradient(160deg,rgba(255,69,58,.13),rgba(255,69,58,.03));border-color:rgba(255,69,58,.22)}
+.bk-sum .d b{color:var(--red)}
+.bk-bar{display:flex;align-items:center;gap:12px;margin:2px 0 14px}
+.bk-bar b{font-family:var(--num);font-size:22px;font-weight:800;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bk-tot{padding:20px 18px;border-radius:var(--rL);background:linear-gradient(160deg,rgba(255,69,58,.14),rgba(255,69,58,.03));border:1px solid rgba(255,69,58,.22);animation:rise .5s var(--ease) both}
+.bk-tot span{font-size:13px;font-weight:700;color:var(--muted)}
+.bk-tot b{display:block;margin-top:6px;font-family:var(--num);font-size:36px;font-weight:800;color:var(--red)}
+.bk-tot i{display:block;margin-top:4px;font-style:normal;font-size:13px;color:var(--muted)}
+.bk-add{width:100%;margin:12px 0 4px}
+.bk-pers{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;min-height:68px;border-bottom:1px solid var(--line);text-align:left}
+.bk-pers:last-child{border-bottom:0}
+.bk-pers .av{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:rgba(255,196,0,.12);color:var(--accent);font-family:var(--num);font-weight:800;font-size:18px;flex:none}
+.bk-pers .tx{flex:1;min-width:0}
+.bk-pers .tx b{display:block;font-size:16px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bk-pers .tx b em{font-style:normal;font-size:11px;padding:2px 7px;border-radius:7px;background:rgba(255,196,0,.15);color:var(--accent);vertical-align:2px}
+.bk-pers .tx i{display:block;margin-top:3px;font-style:normal;font-size:13px;color:var(--muted)}
+.bk-pers .du{font-family:var(--num);font-size:18px;font-weight:700;color:var(--red);white-space:nowrap}
+.bk-dl{display:flex;align-items:center;gap:10px;padding:10px 10px 10px 16px;min-height:70px;border-bottom:1px solid var(--line)}
+.bk-dl:last-child{border-bottom:0}
+.bk-dl .tx{flex:1;min-width:0}
+.bk-dl .tx b{display:block;font-size:15px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bk-dl .tx i{display:block;margin-top:3px;font-style:normal;font-size:12px;color:var(--muted)}
+.bk-dl .inp{height:46px;padding:0 10px;flex:none}
+.bk-dl .inp input{width:64px}
+.bk-dl .inp span{margin-left:4px;color:var(--muted);font-size:14px}
+.bk-in .inp span{display:inline;margin:0 0 0 6px;font-size:16px;letter-spacing:0;text-transform:none;color:var(--muted)}
+.bk-ok{height:46px;min-width:46px;padding:0 10px;border-radius:15px;background:rgba(50,215,75,.14);color:var(--green);font-weight:800;font-size:15px;flex:none;transition:background .25s}
+.bk-ok.arm{background:var(--green);color:#04210A;font-size:12px}
+.bk-in input[type=date]{color-scheme:dark}
+
 /* ===== SETTINGS ===== */
 .sec{margin-top:22px}
 .sec h3{margin:0 8px 10px;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px}
@@ -592,7 +625,7 @@ body.bkwait #nav button[data-tab="booking"] .badge{transform:scale(1)}
 <script>
 (()=>{
 'use strict';
-const VERSION='1.4.0';
+const VERSION='1.5.0';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 
@@ -1122,7 +1155,7 @@ function toast(msg,kind='ok'){const t=$('#toast');t.textContent=msg;t.className=
 /* Réservations — même base Firebase que le site client (RST Transport) */
 const FB_CFG={apiKey:"AIzaSyByZOODFpsk-I5INh64opRiA9HuAUOw_9M",authDomain:"rst-transport-30220.firebaseapp.com",projectId:"rst-transport-30220",storageBucket:"rst-transport-30220.firebasestorage.app",messagingSenderId:"651702209957",appId:"1:651702209957:web:7644e117814379f542ec4c"};
 const FB_URL='https://www.gstatic.com/firebasejs/12.18.0/firebase-',FB_DOM='rst-transport.app';
-const BK={state:'idle',A:null,F:null,auth:null,db:null,me:null,list:[],filter:'all',unsub:null,seen:null,err:'',open:null};
+const BK={state:'idle',A:null,F:null,auth:null,db:null,me:null,list:[],filter:'all',unsub:null,seen:null,err:'',open:null,view:'list',who:null,pre:'',rates:null,held:false};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const bkSlug=n=>n.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'.').replace(/^\.+|\.+$/g,'');
 const isoD=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
@@ -1152,11 +1185,12 @@ async function bkAuth(user){
   try{const s=await BK.F.getDoc(BK.F.doc(BK.db,'users',user.uid));if(s.exists())d=s.data()}catch(e){}
   if(d.role!=='admin'){BK.err='Ce compte n’est pas administrateur.';BK.state='login';await BK.A.signOut(BK.auth);return}
   BK.me={uid:user.uid,name:d.name||'Admin'};BK.state='ready';BK.err='';store.set('bk_on',true);askNotif();
+  BK.F.onSnapshot(BK.F.doc(BK.db,'settings','pricing'),x=>{BK.rates=x.exists()?x.data().sections||[]:[];bkRender(true)},()=>{});
   const q=BK.F.query(BK.F.collection(BK.db,'bookings'),BK.F.orderBy('createdAt','desc'));
   BK.unsub=BK.F.onSnapshot(q,s=>{
     const list=s.docs.map(x=>({id:x.id,...x.data()}));
     if(BK.seen)list.filter(b=>b.status==='En attente'&&!BK.seen.has(b.id)).forEach(bkNotify);
-    BK.seen=new Set(list.map(b=>b.id));BK.list=list;bkBadge();bkRender();
+    BK.seen=new Set(list.map(b=>b.id));BK.list=list;bkBadge();bkRender(true);
   },e=>{BK.state='offline';BK.err=e.code==='permission-denied'?'Accès refusé par Firebase.':'';bkRender()});
   bkRender();
 }
@@ -1210,8 +1244,9 @@ function bkGroups(list,past,i0){
   list.forEach(b=>{if(b.date!==ld){const n=list.filter(x=>x.date===b.date).length;h+=`<div class="h-day"><span>${esc(bkDay(b.date))}</span><span>${n} course${n>1?'s':''}</span></div>`;ld=b.date}h+=bkCard(b,past,i++)});
   return h;
 }
-function bkRender(){
+function bkRender(soft){
   const el=$('#bkBody');if(!el)return;
+  const ae=document.activeElement;if(soft&&ae&&ae.tagName==='INPUT'&&el.contains(ae)){BK.held=true;return}BK.held=false;
   const sub=$('#bkSub');
   if(BK.state==='load'||BK.state==='idle'){el.innerHTML='<div class="bk-spin"></div>';return}
   if(BK.state==='offline'){sub.textContent='HORS LIGNE';el.innerHTML=`<div class="bk-card"><h2>Connexion impossible</h2><p>${esc(BK.err)||'Vérifie ta connexion internet pour recevoir les réservations.'}</p><button class="sbtn acc" id="bkRetry" style="margin-top:18px">Réessayer</button></div>`;$('#bkRetry').onclick=()=>{BK.state='idle';BK.err='';if(BK.auth)bkAuth(BK.auth.currentUser);else bkInit()};return}
@@ -1232,6 +1267,7 @@ function bkRender(){
     goBtn.onclick=login;$('#bkP').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
     return;
   }
+  if(BK.view!=='list')return bkDebtView(el,sub);
   const L=BK.list,w=L.filter(b=>b.status==='En attente').length,ok=L.filter(b=>b.status==='Confirmé').length,td=L.filter(b=>b.date===isoP(0)&&(b.status==='En attente'||b.status==='Confirmé')).length;
   sub.textContent=w?w+' À TRAITER':'TOUT EST À JOUR';
   const segs=[['all','À venir'],['En attente','À traiter'],['Terminée','Faites'],['Annulé','Annulées']];
@@ -1239,12 +1275,13 @@ function bkRender(){
   let list='';
   if(!up.length&&!past.length)list=`<div class="empty-h"><div class="car"></div><b>Rien ici</b>${BK.filter==='all'?'Les nouvelles réservations du site arrivent ici automatiquement.':'Aucune course dans cette catégorie.'}</div>`;
   else{list=bkGroups(up,false,0);if(past.length)list+='<div class="bk-sep">Passées</div>'+bkGroups(past,true,up.length)}
-  el.innerHTML=`<div class="bk-sum"><button class="w" data-f="En attente"><span>À traiter</span><b>${w}</b></button><button class="o" data-f="all"><span>Confirmées</span><b>${ok}</b></button><button data-f="all"><span>Aujourd'hui</span><b>${td}</b></button></div>
+  el.innerHTML=`<div class="bk-sum"><button class="w" data-f="En attente"><span>À traiter</span><b>${w}</b></button><button class="o" data-f="all"><span>Confirmées</span><b>${ok}</b></button><button data-f="all"><span>Aujourd'hui</span><b>${td}</b></button><button class="d" data-v="debts"><span>Dettes</span><b>${bkEur0(bkDueAll())}</b></button></div>
   <div class="s-seg bk-seg">${segs.map(([k,l])=>`<button data-f="${k}" class="${BK.filter===k?'on':''}">${l}</button>`).join('')}</div>
   <div id="bkList">${list}</div><button class="bk-out" id="bkOut">Se déconnecter · ${esc(BK.me.name)}</button>`;
   bkSwipe(el);
 }
 $('#bkBody').addEventListener('click',e=>{
+  if(bkDebtClick(e))return;
   const f=e.target.closest('[data-f]');if(f){if(BK.filter!==f.dataset.f){BK.filter=f.dataset.f;BK.open=null;buzz();bkRender()}return}
   if(e.target.closest('#bkOut')){const o=e.target.closest('#bkOut');if(o.dataset.armed){BK.A.signOut(BK.auth);store.set('bk_on',false)}else{o.dataset.armed=1;o.textContent='Touche encore pour te déconnecter';o.style.color='var(--red)';setTimeout(()=>{if(o.isConnected)bkRender()},2500)}return}
   const card=e.target.closest('.ride');if(!card)return;
@@ -1280,6 +1317,92 @@ function bkSwipe(root){
   });
 }
 
+/* Dettes — même logique que le site : course terminée, payée plus tard, non réglée */
+const bkNum=v=>{const n=parseFloat(String(v??'').replace(',','.').replace(/[^0-9.\-]/g,''));return isFinite(n)?n:0};
+const bkEur=v=>v.toLocaleString('fr-BE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+const bkEur0=v=>v?Math.round(v).toLocaleString('fr-BE')+' €':'0 €';
+const bkDue=b=>b.status==='Terminée'&&b.pay==='later'&&b.paid===false;
+function bkForfait(to){const k=(to||'').trim().toLowerCase();if(!k||!BK.rates)return 0;for(const sc of BK.rates)for(const r of sc.rows||[])if((r.label||'').trim().toLowerCase()===k)return bkNum(r.value);return 0}
+const bkAmt=b=>bkNum(b.amount)||bkForfait(b.to);
+const bkDueAll=()=>BK.list.filter(bkDue).reduce((a,b)=>a+bkAmt(b),0);
+function bkPeople(){
+  const m=new Map();
+  BK.list.forEach(b=>{const n=(b.clientName||'Client').trim();if(!m.has(n))m.set(n,{nom:n,uid:b.clientUid,c:[]});m.get(n).c.push(b)});
+  return[...m.values()].map(p=>{const d=p.c.filter(bkDue);return{...p,dus:d,du:d.reduce((a,b)=>a+bkAmt(b),0),decl:d.some(b=>b.declared)}});
+}
+const BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.5 8 12l7 6.5"/></svg>';
+function bkBack(){buzz();if(BK.view==='client'||(BK.view==='add'&&BK.who))BK.view=BK.view==='add'?'client':'debts';else if(BK.view==='add')BK.view='debts';else BK.view='list';bkRender();$('#booking').scrollTop=0}
+function bkDebtView(el,sub){
+  const bar=t=>`<div class="bk-bar"><button class="gear" data-v="back" aria-label="Retour">${BACK}</button><b>${t}</b></div>`;
+  if(BK.view==='debts'){
+    const ppl=bkPeople(),imp=ppl.filter(p=>p.dus.length).sort((a,b)=>b.du-a.du),tot=imp.reduce((a,p)=>a+p.du,0);
+    sub.textContent=imp.length?imp.length+' CLIENT'+(imp.length>1?'S':'')+' À RÉGLER':'RIEN À RÉCUPÉRER';
+    el.innerHTML=bar('Dettes')+`<div class="bk-tot"><span>À récupérer</span><b>${bkEur(tot)}</b><i>${imp.length?'chez '+imp.length+' client'+(imp.length>1?'s':''):'Tout le monde est à jour'}</i></div>
+    <button class="sbtn acc bk-add" data-v="add">+ Ajouter une dette</button>
+    ${imp.length?`<div class="h-day"><span>Qui me doit quoi</span><span>${imp.length}</span></div><div class="card">${imp.map(p=>`<button class="bk-pers" data-who="${esc(p.nom)}"><span class="av">${esc((p.nom[0]||'?').toUpperCase())}</span><span class="tx"><b>${esc(p.nom)}${p.decl?' <em>payé ?</em>':''}</b><i>${p.dus.length} course${p.dus.length>1?'s':''} à régler</i></span><span class="du">${p.du?bkEur(p.du):'à convenir'}</span>${IC.chev||''}</button>`).join('')}</div>`:'<div class="empty-h"><div class="car"></div><b>Aucune dette</b>Les courses « payées plus tard » et les dettes que tu ajoutes apparaîtront ici.</div>'}`;
+    return;
+  }
+  if(BK.view==='client'){
+    const p=bkPeople().find(x=>x.nom===BK.who);
+    if(!p||!p.dus.length){BK.view='debts';return bkDebtView(el,sub)}
+    sub.textContent='DETTE CLIENT';
+    const l=p.dus.slice().sort((a,b)=>bkKey(a).localeCompare(bkKey(b)));
+    el.innerHTML=bar(esc(p.nom))+`<div class="bk-tot"><span>${p.decl?'Paiement déclaré par le client':'Doit au total'}</span><b id="bkCT">${p.du?bkEur(p.du):'À convenir'}</b><i>${l.length} course${l.length>1?'s':''} non réglée${l.length>1?'s':''}</i></div>
+    <div class="card">${l.map(b=>`<div class="bk-dl" data-id="${b.id}"><div class="tx"><b>${esc(b.to||'Course')}</b><i>${esc(bkDay(b.date))}${b.time?' · '+esc(b.time):''}${b.notes?' · '+esc(b.notes):''}</i></div><div class="inp"><input inputmode="decimal" data-amt="${b.id}" value="${bkNum(b.amount)?bkNum(b.amount).toFixed(2).replace('.',','):''}" placeholder="${bkForfait(b.to)?String(bkForfait(b.to)).replace('.',','):'0,00'}"><span>€</span></div><button class="bk-ok" data-paid="${b.id}" aria-label="Réglé">✓</button></div>`).join('')}</div>
+    <div class="bk-btns"><button class="sbtn grn full" data-v="payall"><span>Tout est réglé · ${p.du?bkEur(p.du):''}</span></button><button class="sbtn full" data-v="add">+ Ajouter une dette pour ${esc(p.nom)}</button></div>`;
+    return;
+  }
+  if(BK.view==='add'){
+    sub.textContent='NOUVELLE DETTE';
+    const names=[...new Set(BK.list.map(b=>(b.clientName||'').trim()).filter(Boolean))].sort();
+    el.innerHTML=bar('Ajouter une dette')+`<div class="bk-card">
+    <label class="bk-in"><span>Qui me doit</span><div class="inp"><input id="dW" list="dWl" autocapitalize="words" value="${esc(BK.who||'')}" placeholder="Nom du client"></div></label><datalist id="dWl">${names.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+    <label class="bk-in"><span>Montant</span><div class="inp"><input id="dA" inputmode="decimal" placeholder="0,00"><span>€</span></div></label>
+    <label class="bk-in"><span>Pour quoi</span><div class="inp"><input id="dT" placeholder="Course, trajet…" value="Course"></div></label>
+    <label class="bk-in"><span>Date</span><div class="inp"><input id="dD" type="date" value="${isoP(0)}"></div></label>
+    <div class="bk-err" id="dE"></div><button class="sbtn acc" data-v="save">Enregistrer la dette</button></div>`;
+  }
+}
+async function bkPatch(id,data){await BK.F.updateDoc(BK.F.doc(BK.db,'bookings',id),data)}
+function bkDebtClick(e){
+  const v=e.target.closest('[data-v]'),w=e.target.closest('[data-who]'),pd=e.target.closest('[data-paid]');
+  if(w){BK.who=w.dataset.who;BK.view='client';buzz();bkRender();$('#booking').scrollTop=0;return true}
+  if(pd){
+    if(!pd.dataset.armed){pd.dataset.armed=1;pd.classList.add('arm');pd.textContent='Réglé ?';buzz();setTimeout(()=>{if(pd.isConnected){delete pd.dataset.armed;pd.classList.remove('arm');pd.textContent='✓'}},2500);return true}
+    bkPatch(pd.dataset.paid,{paid:true,declared:false}).then(()=>{buzz('success');toast('Course réglée')}).catch(()=>toast('Modification refusée','no'));return true;
+  }
+  if(!v)return false;
+  const k=v.dataset.v;
+  if(k==='debts'){BK.view='debts';BK.who=null;buzz();bkRender();$('#booking').scrollTop=0}
+  else if(k==='back')bkBack();
+  else if(k==='add'){BK.view='add';buzz();bkRender();setTimeout(()=>{const i=$(BK.who?'#dA':'#dW');i&&i.focus()},350)}
+  else if(k==='payall'){
+    const p=bkPeople().find(x=>x.nom===BK.who);if(!p)return true;
+    if(!v.dataset.armed){v.dataset.armed=1;v.querySelector('span').textContent='Confirmer : '+(p.du?bkEur(p.du)+' reçus':'tout réglé')+' ?';buzz();setTimeout(()=>{if(v.isConnected&&v.dataset.armed)bkRender()},2500);return true}
+    (async()=>{let ko=0;for(const b of p.dus){try{await bkPatch(b.id,{paid:true,declared:false})}catch(x){ko++}}buzz(ko?'heavy':'success');toast(ko?ko+' échec(s)':(p.du?bkEur(p.du)+' encaissés':'Dette réglée'),ko?'no':'ok');BK.view='debts';bkRender()})();
+  }
+  else if(k==='save'){
+    const who=$('#dW').value.trim(),amt=bkNum($('#dA').value),what=$('#dT').value.trim()||'Course',date=$('#dD').value||isoP(0),er=$('#dE');
+    if(!who){er.textContent='Indique le nom du client.';shake(v);buzz('heavy');return true}
+    if(!(amt>0)){er.textContent='Indique un montant.';shake(v);buzz('heavy');return true}
+    const known=BK.list.find(b=>(b.clientName||'').trim().toLowerCase()===who.toLowerCase()&&b.clientUid);
+    v.disabled=true;v.textContent='Enregistrement…';
+    BK.F.addDoc(BK.F.collection(BK.db,'bookings'),{clientUid:known?known.clientUid:BK.me.uid,clientName:known?known.clientName:who,to:what,date,time:'',trip:'Aller simple',pay:'later',paid:false,amount:amt,notes:'',status:'Terminée',manual:true,createdAt:BK.F.serverTimestamp()})
+      .then(()=>{buzz('success');toast('Dette ajoutée · '+bkEur(amt));BK.who=known?known.clientName:who;BK.view='client';bkRender()})
+      .catch(()=>{v.disabled=false;v.textContent='Enregistrer la dette';er.textContent='Enregistrement refusé.';buzz('heavy')});
+  }
+  else return false;
+  return true;
+}
+$('#bkBody').addEventListener('change',e=>{
+  const i=e.target.closest('[data-amt]');if(!i)return;
+  const b=BK.list.find(x=>x.id===i.dataset.amt);if(!b)return;
+  const n=bkNum(i.value);if(n===bkNum(b.amount))return;
+  bkPatch(b.id,n>0?{amount:n,zero:false}:{amount:0,paid:true,zero:true}).then(()=>{buzz('success');toast(n>0?'Montant mis à jour':'Retirée des dettes')}).catch(()=>toast('Modification refusée','no'));
+});
+$('#bkBody').addEventListener('focusout',()=>setTimeout(()=>{if(BK.held&&!($('#bkBody').contains(document.activeElement)&&document.activeElement.tagName==='INPUT'))bkRender()},120));
+$('#bkBody').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.amt)e.target.blur()});
+
 /* Native */
 function setupNative(){
   const A=plug('App');
@@ -1288,6 +1411,7 @@ function setupNative(){
       if(rcOpen)return closeReceipt();
       if(document.activeElement&&document.activeElement.tagName==='INPUT')return document.activeElement.blur();
       if(activeTab==='settings')return go(lastTab);
+      if(activeTab==='booking'&&BK.view!=='list')return bkBack();
       if(activeTab!=='meter')return go('meter');
       A.minimizeApp();
     });
