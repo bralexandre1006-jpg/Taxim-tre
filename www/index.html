@@ -221,10 +221,35 @@ body.inride .seg-wrap{grid-template-rows:0fr;opacity:0;margin-top:0}
 .hint{position:absolute;bottom:calc(100% + 8px);right:0;font-size:13px;font-weight:700;color:var(--text);background:var(--s3);border:1px solid var(--line2);padding:8px 12px;border-radius:12px;opacity:0;transform:translateY(6px);transition:.3s var(--ease);pointer-events:none}
 .hint.show{opacity:1;transform:none}
 
+/* stats */
+.s-seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:20px;background:var(--s1);border:1px solid var(--line);margin-bottom:14px}
+.s-seg button{height:44px;border-radius:15px;font-weight:800;font-size:15px;color:var(--muted);transition:background .3s,color .3s}
+.s-seg button.on{background:var(--s3);color:var(--accent)}
+.s-hero{padding:18px;border-radius:var(--rL);background:linear-gradient(160deg,rgba(255,196,0,.14),rgba(255,196,0,.03));border:1px solid rgba(255,196,0,.2)}
+.s-hero>span{font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.s-hero .big{font-family:var(--num);font-size:42px;font-weight:800;color:var(--accent);margin:6px 0 2px;white-space:nowrap}
+.s-hero .big small{font-size:20px;margin-left:6px}
+.s-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.s-grid div{padding:12px 14px;border-radius:var(--rS);background:rgba(0,0,0,.25);min-width:0}
+.s-grid span{display:block;font-size:12px;font-weight:700;color:var(--muted)}
+.s-grid b{display:block;margin-top:4px;font-family:var(--num);font-size:19px;font-weight:700;white-space:nowrap}
+.s-grid em{display:block;font-style:normal;font-size:12px;font-weight:800;margin-top:2px}
+.up{color:var(--green)}.dn{color:var(--red)}.eq{color:var(--dim)}
+.s-cmp{margin-top:12px;font-size:13px;font-weight:600;color:var(--muted)}
+.s-row{display:block;width:100%;text-align:left;padding:14px 16px;border-radius:var(--rL);background:var(--s1);border:1px solid var(--line);margin-bottom:10px;transition:background .3s,border-color .3s;animation:rise .5s var(--ease) both}
+.s-row.on{background:var(--s2);border-color:rgba(255,196,0,.35)}
+.s-row .t{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.s-row .t b{font-size:16px;font-weight:800}
+.s-row .t i{font-style:normal;font-family:var(--num);font-size:20px;font-weight:700}
+.s-row .sub{margin-top:3px;font-size:13px;font-weight:600;color:var(--muted)}
+.bar{height:7px;border-radius:4px;background:var(--s3);margin-top:8px;overflow:hidden}
+.bar>div{height:100%;border-radius:4px;background:var(--grad);transform-origin:left;animation:grow .7s var(--ease) both}
+.bar.k>div{background:var(--blue)}
+@keyframes grow{from{transform:scaleX(0)}}
 /* nav */
-#nav{position:fixed;left:16px;right:16px;bottom:calc(var(--sab) + var(--navGap));height:var(--navH);border-radius:24px;background:rgba(22,22,26,.92);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border:1px solid var(--line2);box-shadow:0 18px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);display:grid;grid-template-columns:repeat(3,1fr);padding:6px;z-index:30;transition:transform .5s var(--ease),opacity .4s}
+#nav{position:fixed;left:16px;right:16px;bottom:calc(var(--sab) + var(--navGap));height:var(--navH);border-radius:24px;background:rgba(22,22,26,.92);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border:1px solid var(--line2);box-shadow:0 18px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);display:grid;grid-template-columns:repeat(4,1fr);padding:6px;z-index:30;transition:transform .5s var(--ease),opacity .4s}
 body.kb #nav{transform:translateY(140%);opacity:0}
-#nav .ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/3);border-radius:18px;background:linear-gradient(180deg,rgba(255,196,0,.18),rgba(255,196,0,.06));border:1px solid rgba(255,196,0,.25);transition:transform .5s var(--spring)}
+#nav .ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:18px;background:linear-gradient(180deg,rgba(255,196,0,.18),rgba(255,196,0,.06));border:1px solid rgba(255,196,0,.25);transition:transform .5s var(--spring)}
 #nav button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:800;color:var(--dim);transition:color .3s;min-height:44px}
 #nav button svg{width:21px;height:21px;transition:transform .45s var(--spring)}
 #nav button.on{color:var(--accent)}
@@ -306,6 +331,60 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
 .chips span b{color:var(--text);font-weight:800}
 .chips svg{width:15px;height:15px}
 
+/* ===== GEAR / TOAST ===== */
+.gear{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;background:var(--s2);border:1px solid var(--line);color:var(--muted);flex:none;transition:transform .25s var(--spring),color .3s,background .3s}
+.gear:active{transform:scale(.9);color:var(--accent)}
+.gear svg{width:21px;height:21px}
+#nav.off .ind{opacity:0}
+#nav .ind{transition:transform .5s var(--spring),opacity .3s}
+body.bkwait #nav button[data-tab="booking"] .badge{transform:scale(1)}
+#toast{position:fixed;left:50%;top:calc(var(--sat) + 14px);z-index:90;max-width:calc(100% - 32px);padding:13px 18px;border-radius:18px;background:rgba(36,36,41,.96);border:1px solid var(--line2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);font-size:14px;font-weight:800;box-shadow:0 14px 40px rgba(0,0,0,.45);transform:translate(-50%,-140%);opacity:0;transition:transform .5s var(--spring),opacity .3s;pointer-events:none}
+#toast.on{transform:translate(-50%,0);opacity:1}
+#toast.ok{color:var(--green)}#toast.warn{color:var(--accent)}#toast.no{color:var(--red)}
+
+/* ===== RÉSERVATIONS ===== */
+.bk-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.bk-sum button{padding:15px 14px;border-radius:var(--rL);background:var(--s1);border:1px solid var(--line);text-align:left;min-width:0;transition:transform .2s,border-color .3s}
+.bk-sum button:active{transform:scale(.96)}
+.bk-sum span{font-size:12px;font-weight:700;color:var(--muted)}
+.bk-sum b{display:block;margin-top:6px;font-family:var(--num);font-size:24px;font-weight:700}
+.bk-sum .w{background:linear-gradient(160deg,rgba(255,196,0,.14),rgba(255,196,0,.03));border-color:rgba(255,196,0,.2)}
+.bk-sum .w b{color:var(--accent)}
+.bk-sum .o b{color:var(--green)}
+.bk-seg{grid-template-columns:repeat(4,1fr)}
+.bk-seg button{font-size:13px}
+.bk-swipe{position:relative;margin-bottom:10px;border-radius:var(--rL);overflow:hidden;animation:rise .5s var(--ease) both}
+.bk-swipe .ride{margin:0;animation:none;position:relative;z-index:1;transition:transform .35s var(--ease),background .3s,border-color .3s}
+.bk-swipe.drag .ride{transition:none}
+.bk-bg{position:absolute;inset:0;display:flex;align-items:center;padding:0 24px;font-weight:800;font-size:15px;opacity:0}
+.bk-bg.go{background:rgba(50,215,75,.16);color:var(--green)}
+.bk-bg.stop{background:rgba(255,69,58,.16);color:var(--red);justify-content:flex-end}
+.bk-clock{width:58px;flex:none;text-align:center}
+.bk-clock b{display:block;font-family:var(--num);font-size:20px;font-weight:700}
+.bk-clock i{display:inline-block;margin-top:4px;padding:2px 7px;border-radius:8px;background:var(--s3);font-style:normal;font-size:11px;font-weight:800;color:var(--muted)}
+.bk-line{width:3px;align-self:stretch;margin:4px 0;border-radius:3px;background:var(--accent);flex:none}
+.bk-line.ok{background:var(--green)}.bk-line.no{background:var(--red)}.bk-line.done{background:var(--dim)}
+.ride.past .ride-mid b{color:var(--muted)}
+.bk-st{flex:none;height:28px;padding:0 11px;border-radius:14px;display:flex;align-items:center;font-size:12px;font-weight:800;background:rgba(255,196,0,.13);color:var(--accent)}
+.bk-st.ok{background:rgba(50,215,75,.13);color:var(--green)}
+.bk-st.no{background:rgba(255,69,58,.12);color:var(--red)}
+.bk-st.done{background:var(--s3);color:var(--muted)}
+.bk-st.wait{animation:blink 1.6s infinite}
+.bk-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.bk-btns .sbtn.full{grid-column:1/-1}
+.sbtn.grn{background:rgba(50,215,75,.14);color:var(--green)}
+.bk-card{border-radius:var(--rL);background:var(--s1);border:1px solid var(--line);padding:22px 18px;animation:rise .5s var(--ease) both}
+.bk-card h2{font-family:var(--num);font-size:22px;font-weight:800}
+.bk-card p{margin-top:6px;font-size:14px;line-height:1.5;color:var(--muted)}
+.bk-in{display:block;margin-top:14px}
+.bk-in span{display:block;margin:0 4px 7px;font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.bk-in .inp input{width:100%;text-align:left;font-family:var(--ui);font-size:17px}
+.bk-err{min-height:20px;margin-top:12px;font-size:14px;font-weight:700;color:var(--red)}
+.bk-card .sbtn{width:100%;margin-top:6px}
+.bk-spin{width:30px;height:30px;margin:50px auto;border-radius:50%;border:3px solid var(--s3);border-top-color:var(--accent);animation:spin .8s linear infinite}
+.bk-out{display:block;margin:26px auto 0;padding:12px 18px;font-size:14px;font-weight:800;color:var(--dim)}
+.bk-sep{margin:28px 6px 4px;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+
 /* ===== SETTINGS ===== */
 .sec{margin-top:22px}
 .sec h3{margin:0 8px 10px;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px}
@@ -379,6 +458,7 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
       <div class="brand"></div>
       <h1>Taximètre<small>COMPTEUR GPS</small></h1>
       <div class="pill" id="gpsPill"><span class="dot"></span><span id="gpsTxt">GPS…</span></div>
+      <button class="gear" data-go="settings" aria-label="Réglages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></button>
     </header>
 
     <div class="hero reveal" id="hero" style="animation-delay:.06s">
@@ -450,6 +530,7 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
     <header class="top">
       <div class="brand"></div>
       <h1>Historique<small id="hCount">0 COURSE</small></h1>
+      <button class="gear" data-go="settings" aria-label="Réglages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></button>
     </header>
     <div class="h-sum">
       <div><span>Aujourd'hui</span><b id="hToday">0,00 €</b></div>
@@ -459,12 +540,33 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
     <div id="hList"></div>
   </section>
 
+  <section class="screen" id="stats">
+    <header class="top">
+      <div class="brand"></div>
+      <h1>Stats<small id="sSub">PAR MOIS</small></h1>
+      <button class="gear" data-go="settings" aria-label="Réglages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></button>
+    </header>
+    <div class="s-seg" id="sSeg"><button data-p="w">Semaine</button><button data-p="m" class="on">Mois</button></div>
+    <div id="sBody"></div>
+  </section>
+
+  <section class="screen" id="booking">
+    <header class="top">
+      <div class="brand"></div>
+      <h1>Réservations<small id="bkSub">RST TRANSPORT</small></h1>
+      <button class="gear" data-go="settings" aria-label="Réglages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></button>
+    </header>
+    <div id="bkBody"></div>
+  </section>
+
   <section class="screen" id="settings">
     <header class="top">
       <div class="brand"></div>
       <h1>Réglages<small>TARIFS ET OPTIONS</small></h1>
+      <button class="gear" id="setClose" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </header>
     <div id="setForm"></div>
+    <input type="file" id="impF" hidden>
     <div class="about"><div class="brand"></div><span>Taximètre · v<span id="ver"></span></span></div>
   </section>
 
@@ -473,7 +575,8 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
     <div class="ind" id="ind"></div>
     <button data-tab="meter" class="on"><span class="badge"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.3 19a10 10 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.6" fill="currentColor"/></svg>Compteur</button>
     <button data-tab="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>Historique</button>
-    <button data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Réglages</button>
+    <button data-tab="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg>Stats</button>
+    <button data-tab="booking"><span class="badge"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M9 14.8l2 2 4-4"/></svg>Réservations</button>
   </nav>
 
   <div id="receipt">
@@ -481,13 +584,15 @@ body.inride #nav button[data-tab="meter"] .badge{transform:scale(1);animation:bl
     <div class="rc-foot"><button class="sbtn" id="rcShare"></button><button class="sbtn acc" id="rcClose">Nouvelle course</button></div>
   </div>
 
+  <div id="toast"></div>
+
   <div id="launch"><div class="wipe"></div><div class="solid"></div><div class="lstreaks" id="lStreaks"></div><div class="lcar"></div><div class="ltxt"><b>C'EST PARTI</b><span id="lSub"></span></div></div>
 </div>
 
 <script>
 (()=>{
 'use strict';
-const VERSION='1.2.2';
+const VERSION='1.4.0';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 
@@ -808,22 +913,26 @@ function drawTrace(cv,path,live){
 })();
 
 /* Tabs */
-const TABS=['meter','history','settings'];let activeTab='meter';
+const TABS=['meter','history','stats','booking','settings'];let activeTab='meter',lastTab='meter';
 function go(tab){
   if(tab===activeTab)return;
   const from=TABS.indexOf(activeTab),to=TABS.indexOf(tab),dir=to>from?1:-1,cur=$('#'+activeTab),nx=$('#'+tab);
   cur.style.setProperty('--from',(-dir*24)+'px');cur.classList.remove('active');
   nx.style.transition='none';nx.style.setProperty('--from',(dir*24)+'px');void nx.offsetWidth;nx.style.transition='';nx.classList.add('active');
-  activeTab=tab;document.body.classList.remove('tab-meter','tab-history','tab-settings');document.body.classList.add('tab-'+tab);
-  $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));$('#ind').style.transform=`translateX(${to*100}%)`;
-  buzz();if(tab==='meter'){traceDirty=true;slOn=null}if(tab==='history')renderHistory();
+  activeTab=tab;if(tab!=='settings')lastTab=tab;document.body.classList.remove(...TABS.map(t=>'tab-'+t));document.body.classList.add('tab-'+tab);
+  $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));$('#nav').classList.toggle('off',tab==='settings');if(tab!=='settings')$('#ind').style.transform=`translateX(${to*100}%)`;
+  buzz();if(tab==='meter'){traceDirty=true;slOn=null}if(tab==='history')renderHistory();if(tab==='stats')renderStats();if(tab==='booking')bkOpen();
 }
 $$('#nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.tab)));
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+$('#setClose').addEventListener('click',()=>go(lastTab));
 
 /* Bill */
 function recFare(r){return fareOf({rates:r.rates,distM:r.distM,waitS:r.waitS,minFare:r.minFare})}
 function billHTML(r){
-  const f=recFare(r),c=r.cur||S.cur;
+  const c=r.cur||S.cur;
+  if(r.manual)return `<div class="bill"><div><span>Distance</span><b>${km(r.distM)} km</b></div><div><span>Prix moyen<em>Course ajoutée hors app</em></span><b>${money(r.distM?r.total/(r.distM/1000):0)} ${c}/km</b></div><div class="tot"><span>Total</span><b>${money(r.total)} ${c}</b></div></div>`;
+  const f=recFare(r);
   return `<div class="bill">
     <div><span>Prise en charge</span><b>${money(f.base)} ${c}</b></div>
     <div><span>Distance<em>${km(r.distM)} km × ${money(r.rates.km)} ${c}</em></span><b>${money(f.kmC)} ${c}</b></div>
@@ -845,8 +954,8 @@ function renderHistory(){
   history.forEach(r=>{
     const dl=dayLabel(r.start);
     if(dl!==ld){const dt=history.filter(x=>dayLabel(x.start)===dl).reduce((a,x)=>a+x.total,0);h+=`<div class="h-day"><span>${dl}</span><span>${moneyC(dt)}</span></div>`;ld=dl}
-    h+=`<div class="ride" data-id="${r.id}" style="animation-delay:${Math.min(i++,8)*.04}s"><button class="ride-row"><div class="ride-ic ${r.tariff==='t2'?'n':''}">${tIcon(r.tariff)}</div><div class="ride-mid"><b>${hhmm(r.start)} · ${km(r.distM)} km</b><span>${durLong(r.activeMs)} · ${r.tariff==='t2'?'Nuit':'Jour'}</span></div><div class="ride-pr">${money(r.total)}</div>${IC.chev}</button>
-    <div class="ride-det"><div><div class="det-in"><div class="mini"><canvas></canvas></div>${billHTML(r)}<div class="row-btns"><button class="sbtn" data-act="share">${IC.share}<span>Partager</span></button><button class="sbtn red" data-act="del">${IC.trash}<span>Supprimer</span></button></div></div></div></div></div>`;
+    h+=`<div class="ride" data-id="${r.id}" style="animation-delay:${Math.min(i++,8)*.04}s"><button class="ride-row"><div class="ride-ic ${r.tariff==='t2'?'n':''}">${tIcon(r.tariff)}</div><div class="ride-mid"><b>${r.manual?'':hhmm(r.start)+' · '}${km(r.distM)} km</b><span>${r.manual?'Ajoutée hors app':durLong(r.activeMs)+' · '+(r.tariff==='t2'?'Nuit':'Jour')}</span></div><div class="ride-pr">${money(r.total)}</div>${IC.chev}</button>
+    <div class="ride-det"><div><div class="det-in">${r.manual?'':'<div class="mini"><canvas></canvas></div>'}${billHTML(r)}<div class="row-btns"><button class="sbtn" data-act="share">${IC.share}<span>Partager</span></button><button class="sbtn red" data-act="del">${IC.trash}<span>Supprimer</span></button></div></div></div></div></div>`;
   });
   L.innerHTML=h;
 }
@@ -862,7 +971,7 @@ $('#hList').addEventListener('click',e=>{
     }
     return;
   }
-  if(e.target.closest('.ride-row')){const open=!card.classList.contains('open');$$('.ride.open').forEach(x=>x!==card&&x.classList.remove('open'));card.classList.toggle('open',open);buzz();if(open)setTimeout(()=>drawTrace(card.querySelector('canvas'),r.path,false),60)}
+  if(e.target.closest('.ride-row')){const open=!card.classList.contains('open');$$('.ride.open').forEach(x=>x!==card&&x.classList.remove('open'));card.classList.toggle('open',open);buzz();if(open&&!r.manual)setTimeout(()=>drawTrace(card.querySelector('canvas'),r.path,false),60)}
 });
 
 /* Receipt */
@@ -884,7 +993,7 @@ $('#rcShare').addEventListener('click',()=>rcRec&&shareRec(rcRec,$('#rcShare')))
 
 async function shareRec(r,btn){
   const f=recFare(r),c=r.cur||S.cur,d=new Date(r.start);
-  const text=`🚕 TAXIMÈTRE · REÇU\n${d.toLocaleDateString('fr-BE')} · ${hhmm(r.start)} → ${hhmm(r.end)}\n\nDistance : ${km(r.distM)} km\nDurée : ${durLong(r.activeMs)}${r.waitOn===false?'':`\nAttente : ${durLong(r.waitS*1000)}`}\nTarif : ${r.tariff==='t2'?'Nuit (T2)':'Jour (T1)'}\n\nPrise en charge : ${money(f.base)} ${c}\nDistance : ${money(f.kmC)} ${c}${r.waitOn===false?'':`\nAttente : ${money(f.waitC)} ${c}`}${f.minApplied?`\nCourse minimum : ${money(r.minFare)} ${c}`:''}\n━━━━━━━━━━━━━━\nTOTAL : ${money(r.total)} ${c}`;
+  const text=r.manual?`🚕 TAXIMÈTRE · COURSE\n${d.toLocaleDateString('fr-BE')}\n\nDistance : ${km(r.distM)} km\n━━━━━━━━━━━━━━\nTOTAL : ${money(r.total)} ${c}`:`🚕 TAXIMÈTRE · REÇU\n${d.toLocaleDateString('fr-BE')} · ${hhmm(r.start)} → ${hhmm(r.end)}\n\nDistance : ${km(r.distM)} km\nDurée : ${durLong(r.activeMs)}${r.waitOn===false?'':`\nAttente : ${durLong(r.waitS*1000)}`}\nTarif : ${r.tariff==='t2'?'Nuit (T2)':'Jour (T1)'}\n\nPrise en charge : ${money(f.base)} ${c}\nDistance : ${money(f.kmC)} ${c}${r.waitOn===false?'':`\nAttente : ${money(f.waitC)} ${c}`}${f.minApplied?`\nCourse minimum : ${money(r.minFare)} ${c}`:''}\n━━━━━━━━━━━━━━\nTOTAL : ${money(r.total)} ${c}`;
   const Sh=plug('Share');
   try{
     if(Sh){await Sh.share({title:'Reçu de course',text,dialogTitle:'Partager le reçu'});return}
@@ -915,7 +1024,7 @@ function renderSettings(){
       h+=`<div class="field${wf?' w':''}"><label for="f_${k}">${l}${sub?`<small>${sub}</small>`:''}</label><div class="inp"><input id="f_${k}" data-k="${k}" type="text" ${txt?'maxlength="3" style="width:48px"':'inputmode="decimal"'} value="${txt?v:fmtIn(k,v)}" autocomplete="off">${unit?`<i>${unit.replace('{c}',S.cur)}</i>`:''}</div></div>`});
     h+='</div></div>';
   });
-  h+=`<div class="sec"><h3>${SI.data}Données</h3><div class="card"><button class="field tap" id="clearH"><label class="danger"><span>Effacer l'historique</span><small>${history.length} course(s) enregistrée(s)</small></label></button><button class="field tap" id="resetS"><label><span>Rétablir les tarifs par défaut</span></label></button></div></div>`;
+  h+=`<div class="sec"><h3>${SI.data}Données</h3><div class="card"><button class="field tap" id="clearH"><label class="danger"><span>Effacer l'historique</span><small>${history.length} course(s) enregistrée(s)</small></label></button><button class="field tap" id="expD"><label><span>Exporter les données</span><small>Fichier JSON avec toutes les courses</small></label></button><button class="field tap" id="impD"><label><span>Importer des données</span><small>Ajoute les courses d'un fichier JSON</small></label></button><button class="field tap" id="resetS"><label><span>Rétablir les tarifs par défaut</span></label></button></div></div>`;
   $('#setForm').innerHTML=h;
 }
 function flash(inp,cls){const w=inp.closest('.inp');w.classList.remove('ok','bad','shake');void w.offsetWidth;w.classList.add(cls);if(cls==='bad')w.classList.add('shake');setTimeout(()=>w.classList.remove(cls),1200)}
@@ -935,16 +1044,241 @@ $('#setForm').addEventListener('click',e=>{
     if(k==='waitOn'){applyWait();if(ride){ride.waitOn=S.waitOn;persist()}lastKey='';paintMeter()}return}
   const ch=e.target.closest('#clearH');
   if(ch){if(ch.dataset.armed){history=[];store.set('tx_history',[]);renderHistory();renderSettings();buzz('heavy')}else{ch.dataset.armed=1;ch.querySelector('span').textContent='Appuie encore pour confirmer';buzz('medium');setTimeout(()=>ch.isConnected&&renderSettings(),2600)}return}
+  if(e.target.closest('#expD')){exportData(e.target.closest('#expD'));return}
+  if(e.target.closest('#impD')){$('#impF').value='';$('#impF').click();return}
   if(e.target.closest('#resetS')){S.t1=Object.assign({},DEF.t1);S.t2=Object.assign({},DEF.t2);S.minFare=0;S.waitThr=10;saveS();renderSettings();lastRate='';paintMeter();buzz('success')}
 });
 document.addEventListener('focusin',e=>{if(e.target.tagName==='INPUT'){document.body.classList.add('kb');setTimeout(()=>e.target.scrollIntoView({block:'center',behavior:'smooth'}),300)}});
 document.addEventListener('focusout',e=>{if(e.target.tagName==='INPUT')setTimeout(()=>{if(!document.activeElement||document.activeElement.tagName!=='INPUT')document.body.classList.remove('kb')},80)});
+
+
+/* Export / Import */
+function setMsg(id,t){const b=$('#'+id);if(!b)return;const s=b.querySelector('small');s.textContent=t;setTimeout(()=>b.isConnected&&renderSettings(),3000)}
+async function exportData(){
+  const d=new Date(),name=`taximetre-${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.json`;
+  const data=JSON.stringify({app:'taximetre',version:1,exportedAt:d.toISOString(),settings:S,history},null,1);
+  const FS=plug('Filesystem'),Sh=plug('Share');
+  try{
+    if(FS&&Sh){const w=await FS.writeFile({path:name,data,directory:'CACHE',encoding:'utf8'});await Sh.share({title:'Export Taximètre',files:[w.uri],dialogTitle:'Exporter les courses'})}
+    else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+    buzz('success');setMsg('expD',history.length+' course(s) exportée(s)');
+  }catch(e){if(!/cancel/i.test(String(e&&e.message)))setMsg('expD','Échec de l\'export')}
+}
+function validRec(r){return r&&typeof r==='object'&&isFinite(r.start)&&isFinite(r.total)&&isFinite(r.distM)}
+$('#impF').addEventListener('change',async e=>{
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  try{
+    const j=JSON.parse(await f.text()),arr=Array.isArray(j)?j:j.history;
+    if(!Array.isArray(arr))throw 0;
+    const ids=new Set(history.map(r=>String(r.id)));let n=0;
+    arr.filter(validRec).forEach(r=>{
+      if(r.id==null)r.id=r.start;if(ids.has(String(r.id)))return;
+      r=Object.assign({end:r.start,tariff:'t1',rates:{base:0,km:0,wait:0},minFare:0,cur:S.cur,waitOn:false,activeMs:0,waitS:0,maxKmh:0,path:[]},r);
+      history.push(r);ids.add(String(r.id));n++;
+    });
+    history.sort((a,b)=>b.start-a.start);store.set('tx_history',history);
+    renderHistory();renderSettings();buzz('success');setMsg('impD',n?n+' course(s) importée(s)':'Aucune nouvelle course');
+  }catch(err){buzz('medium');setMsg('impD','Fichier invalide')}
+});
+
+/* Stats */
+let sPer=store.get('tx_sper','m'),sSel=null;
+const MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+function perKey(t){const d=new Date(t);if(sPer==='m')return d.getFullYear()*100+d.getMonth();const m=new Date(d.getFullYear(),d.getMonth(),d.getDate()-((d.getDay()+6)%7));return m.getTime()}
+function perLabel(k){if(sPer==='m'){const y=Math.floor(k/100),m=k%100;return MOIS[m][0].toUpperCase()+MOIS[m].slice(1)+' '+y}const a=new Date(k),b=new Date(k+6*864e5);return `${a.getDate()} ${MOIS[a.getMonth()].slice(0,4)}. → ${b.getDate()} ${MOIS[b.getMonth()].slice(0,4)}.`}
+function delta(a,b){if(!b)return '<em class="eq">—</em>';const p=(a-b)/b*100;if(Math.abs(p)<.5)return '<em class="eq">= 0 %</em>';return `<em class="${p>0?'up':'dn'}">${p>0?'▲':'▼'} ${Math.abs(p).toFixed(0)} %</em>`}
+function renderStats(){
+  $$('#sSeg button').forEach(b=>b.classList.toggle('on',b.dataset.p===sPer));
+  $('#sSub').textContent=sPer==='m'?'PAR MOIS':'PAR SEMAINE';
+  const B=$('#sBody');
+  if(!history.length){B.innerHTML='<div class="empty-h"><div class="car"></div><b>Pas encore de stats</b>Termine ou importe des courses pour comparer tes périodes.</div>';return}
+  const G=new Map();
+  history.forEach(r=>{const k=perKey(r.start);const g=G.get(k)||{k,rev:0,dm:0,n:0};g.rev+=r.total;g.dm+=r.distM;g.n++;G.set(k,g)});
+  const L=[...G.values()].sort((a,b)=>b.k-a.k);
+  if(sSel==null||!G.has(sSel))sSel=L[0].k;
+  const i=L.findIndex(g=>g.k===sSel),c=L[i],p=L[i+1],c$=S.cur;
+  const ek=g=>g.dm?g.rev/(g.dm/1000):0,avg=g=>g.n?g.rev/g.n:0;
+  let h=`<div class="s-hero"><span>${perLabel(c.k)}</span><div class="big">${money(c.rev)}<small>${c$}</small></div>${p?delta(c.rev,p.rev):''}
+  <div class="s-grid"><div><span>Kilomètres</span><b>${(c.dm/1000).toFixed(1).replace('.',',')} km</b>${p?delta(c.dm,p.dm):''}</div><div><span>Courses</span><b>${c.n}</b>${p?delta(c.n,p.n):''}</div><div><span>Gain par km</span><b>${money(ek(c))} ${c$}</b>${p?delta(ek(c),ek(p)):''}</div><div><span>Moyenne / course</span><b>${money(avg(c))} ${c$}</b>${p?delta(avg(c),avg(p)):''}</div></div>
+  <div class="s-cmp">${p?'Comparé à '+perLabel(p.k)+' ('+money(p.rev)+' '+c$+')':'Aucune période précédente à comparer'}</div></div>
+  <div class="h-day"><span>${sPer==='m'?'Tous les mois':'Toutes les semaines'}</span><span>${money(L.reduce((a,g)=>a+g.rev,0))} ${c$}</span></div>`;
+  const mR=Math.max(...L.map(g=>g.rev)),mK=Math.max(...L.map(g=>g.dm));
+  L.forEach((g,j)=>{h+=`<button class="s-row${g.k===sSel?' on':''}" data-k="${g.k}" style="animation-delay:${Math.min(j,8)*.04}s"><div class="t"><b>${perLabel(g.k)}</b><i>${money(g.rev)} ${c$}</i></div><div class="sub">${(g.dm/1000).toFixed(1).replace('.',',')} km · ${g.n} course${g.n>1?'s':''} · ${money(ek(g))} ${c$}/km</div><div class="bar"><div style="width:${mR?g.rev/mR*100:0}%"></div></div><div class="bar k"><div style="width:${mK?g.dm/mK*100:0}%"></div></div></button>`});
+  B.innerHTML=h;
+}
+$('#sSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.p===sPer)return;sPer=b.dataset.p;store.set('tx_sper',sPer);sSel=null;buzz();renderStats()});
+$('#sBody').addEventListener('click',e=>{const r=e.target.closest('.s-row');if(!r)return;sSel=+r.dataset.k;buzz();renderStats();$('#stats').scrollTo({top:0,behavior:'smooth'})});
 
 /* Buttons */
 $('#bStart').addEventListener('click',()=>{if(ride)return;if(gps.state==='denied'&&!S.demo){startGps(true);shake($('#perm'));return}startRide()});
 $('#bPause').addEventListener('click',pauseRide);
 $$('#seg button').forEach(b=>b.addEventListener('click',()=>setTariff(b.dataset.t)));
 $('#permBtn').addEventListener('click',()=>startGps(true));
+
+/* Toast */
+let toastT=0;
+function toast(msg,kind='ok'){const t=$('#toast');t.textContent=msg;t.className='on '+kind;clearTimeout(toastT);toastT=setTimeout(()=>t.className=kind,2400)}
+
+/* Réservations — même base Firebase que le site client (RST Transport) */
+const FB_CFG={apiKey:"AIzaSyByZOODFpsk-I5INh64opRiA9HuAUOw_9M",authDomain:"rst-transport-30220.firebaseapp.com",projectId:"rst-transport-30220",storageBucket:"rst-transport-30220.firebasestorage.app",messagingSenderId:"651702209957",appId:"1:651702209957:web:7644e117814379f542ec4c"};
+const FB_URL='https://www.gstatic.com/firebasejs/12.18.0/firebase-',FB_DOM='rst-transport.app';
+const BK={state:'idle',A:null,F:null,auth:null,db:null,me:null,list:[],filter:'all',unsub:null,seen:null,err:'',open:null};
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const bkSlug=n=>n.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'.').replace(/^\.+|\.+$/g,'');
+const isoD=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const isoP=n=>{const d=new Date();d.setDate(d.getDate()+n);return isoD(d)};
+function bkDay(s){if(!s)return'Sans date';if(s===isoP(0))return"Aujourd'hui";if(s===isoP(1))return'Demain';if(s===isoP(-1))return'Hier';return new Date(s+'T12:00:00').toLocaleDateString('fr-BE',{weekday:'long',day:'numeric',month:'long'})}
+const bkCls=s=>s==='Confirmé'?'ok':s==='Annulé'?'no':s==='Terminée'?'done':'wait';
+const bkLbl=s=>s==='Confirmé'?'Confirmée':s==='Annulé'?'Annulée':s==='Terminée'?'Terminée':'À traiter';
+const bkKey=b=>(b.date||'9999-12-31')+'T'+(b.time||'23:59');
+function bkErr(c){return{'auth/invalid-credential':'Nom ou mot de passe incorrect.','auth/wrong-password':'Nom ou mot de passe incorrect.','auth/user-not-found':'Nom ou mot de passe incorrect.','auth/too-many-requests':'Trop d’essais. Réessaie dans quelques minutes.','auth/network-request-failed':'Pas de connexion internet.'}[c]||'Connexion impossible.'}
+
+function bkBoot(){if(store.get('bk_on',false))bkInit()}
+function bkOpen(){if(BK.state==='idle')bkInit();else bkRender()}
+async function bkInit(){
+  if(BK.state==='load')return;
+  BK.state='load';bkRender();
+  try{
+    const[app,A,F]=await Promise.all([import(FB_URL+'app.js'),import(FB_URL+'auth.js'),import(FB_URL+'firestore.js')]);
+    const fa=app.initializeApp(FB_CFG);BK.A=A;BK.F=F;BK.auth=A.getAuth(fa);BK.db=F.getFirestore(fa);
+    A.onAuthStateChanged(BK.auth,bkAuth);
+  }catch(e){BK.state='offline';bkRender()}
+}
+async function bkAuth(user){
+  if(BK.unsub){BK.unsub();BK.unsub=null}
+  BK.list=[];BK.seen=null;bkBadge();
+  if(!user){BK.me=null;BK.state='login';bkRender();return}
+  let d={};
+  try{const s=await BK.F.getDoc(BK.F.doc(BK.db,'users',user.uid));if(s.exists())d=s.data()}catch(e){}
+  if(d.role!=='admin'){BK.err='Ce compte n’est pas administrateur.';BK.state='login';await BK.A.signOut(BK.auth);return}
+  BK.me={uid:user.uid,name:d.name||'Admin'};BK.state='ready';BK.err='';store.set('bk_on',true);askNotif();
+  const q=BK.F.query(BK.F.collection(BK.db,'bookings'),BK.F.orderBy('createdAt','desc'));
+  BK.unsub=BK.F.onSnapshot(q,s=>{
+    const list=s.docs.map(x=>({id:x.id,...x.data()}));
+    if(BK.seen)list.filter(b=>b.status==='En attente'&&!BK.seen.has(b.id)).forEach(bkNotify);
+    BK.seen=new Set(list.map(b=>b.id));BK.list=list;bkBadge();bkRender();
+  },e=>{BK.state='offline';BK.err=e.code==='permission-denied'?'Accès refusé par Firebase.':'';bkRender()});
+  bkRender();
+}
+function bkBadge(){document.body.classList.toggle('bkwait',BK.list.some(b=>b.status==='En attente'))}
+function bkNotify(b){
+  buzz('success');toast('Nouvelle réservation · '+(b.clientName||'Client'),'warn');
+  const LN=plug('LocalNotifications');
+  if(LN)LN.schedule({notifications:[{id:(Date.now()%2e9)|0,title:'Nouvelle réservation',body:(b.clientName||'Client')+' · '+bkDay(b.date)+' '+(b.time||'')+' → '+(b.to||'')}]}).catch(()=>{});
+}
+
+async function bkSet(id,data,msg,kind='ok'){
+  try{await BK.F.updateDoc(BK.F.doc(BK.db,'bookings',id),data);buzz('success');toast(msg,kind)}
+  catch(e){buzz('heavy');toast('Modification refusée','no')}
+}
+const bkConfirm=id=>bkSet(id,{status:'Confirmé'},'Course confirmée');
+const bkCancel=id=>bkSet(id,{status:'Annulé'},'Course annulée','no');
+function bkDone(b){bkSet(b.id,{status:'Terminée',paid:b.pay!=='later'},b.pay==='later'?'Course faite · à régler plus tard':'Course terminée')}
+async function bkDel(id){try{await BK.F.deleteDoc(BK.F.doc(BK.db,'bookings',id));buzz('medium');toast('Course supprimée','no')}catch(e){toast('Suppression refusée','no')}}
+async function bkSerie(serie,status){
+  const l=BK.list.filter(b=>b.serie===serie&&(b.status==='En attente'||b.status==='Confirmé'));let ko=0;
+  for(const b of l){try{await BK.F.updateDoc(BK.F.doc(BK.db,'bookings',b.id),{status})}catch(e){ko++}}
+  buzz(ko?'heavy':'success');toast(ko?ko+' échec(s)':l.length+' courses mises à jour',ko?'no':'ok');
+}
+function bkMeter(){go('meter');setTimeout(()=>{const s=$('#bStart');if(!ride&&s&&!s.classList.contains('hide'))s.click()},450)}
+
+function bkVisible(){
+  const f=BK.filter,l=f==='all'?BK.list.filter(b=>b.status==='En attente'||b.status==='Confirmé'):BK.list.filter(b=>b.status===f);
+  const now=isoD(new Date())+'T'+pad(new Date().getHours())+':'+pad(new Date().getMinutes());
+  const up=l.filter(b=>bkKey(b)>=now).sort((a,b)=>bkKey(a).localeCompare(bkKey(b)));
+  const past=l.filter(b=>bkKey(b)<now).sort((a,b)=>bkKey(b).localeCompare(bkKey(a)));
+  return f==='all'||f==='En attente'?{up,past}:{up:l.slice().sort((a,b)=>bkKey(b).localeCompare(bkKey(a))),past:[]};
+}
+function bkCard(b,past,i){
+  const open=BK.open===b.id,c=bkCls(b.status),act=b.status==='En attente'||b.status==='Confirmé';
+  const tag=b.trip==='Aller-retour'?'<i>A/R</i>':b.serie?`<i>${esc(b.serieRang||'?')}/${esc(b.serieTotal||'?')}</i>`:'';
+  const pay=b.pay==='later'?(b.status==='Terminée'?(b.paid?'Payée':b.declared?'Paiement déclaré':'À régler'):'Paiement plus tard'):'Paiement sur place';
+  const rows=[['Client',esc(b.clientName||'—')],['Date',esc(bkDay(b.date))+' · '+esc(b.time||'--:--')],['Trajet',esc(b.trip||'Aller simple')],['Paiement',pay]];
+  if(b.notes)rows.push(['Remarques',esc(b.notes)]);
+  let btn='';
+  if(b.status==='En attente')btn+=`<button class="sbtn acc" data-bk="confirm">Confirmer</button><button class="sbtn red" data-bk="cancel">Refuser</button>`;
+  if(b.status==='Confirmé')btn+=`<button class="sbtn acc full" data-bk="meter">${IC.play||''}<span>Démarrer le compteur</span></button><button class="sbtn grn" data-bk="done"><span>Course faite</span></button><button class="sbtn red" data-bk="cancel">Annuler</button>`;
+  if(b.status==='Terminée'||b.status==='Annulé')btn+=`<button class="sbtn" data-bk="restore">Remettre à venir</button>`;
+  if(b.serie&&act){const n=BK.list.filter(x=>x.serie===b.serie&&(x.status==='En attente'||x.status==='Confirmé')).length;if(n>1)btn+=`<button class="sbtn grn" data-bk="serieOk">Confirmer la série (${n})</button><button class="sbtn red" data-bk="serieNo">Annuler la série (${n})</button>`}
+  btn+=`<button class="sbtn red${b.status==='Terminée'||b.status==='Annulé'?'':' full'}" data-bk="del"><span>Supprimer</span></button>`;
+  const card=`<div class="ride${open?' open':''}${past?' past':''}" data-id="${b.id}"><button class="ride-row"><div class="bk-clock"><b>${esc(b.time||'--:--')}</b>${tag}</div><div class="bk-line ${c}"></div><div class="ride-mid"><b>${esc(b.to||'Destination ?')}</b><span>${esc(b.clientName||'Client')}${b.notes?' · '+esc(b.notes):''}</span></div><span class="bk-st ${c}">${bkLbl(b.status)}</span></button>
+  <div class="ride-det"><div><div class="det-in"><div class="bill">${rows.map(r=>`<div><span>${r[0]}</span><b style="font-family:var(--ui);font-size:15px;text-align:right;white-space:normal">${r[1]}</b></div>`).join('')}</div><div class="bk-btns">${btn}</div></div></div></div></div>`;
+  return `<div class="bk-swipe" data-sw="${act?b.id:''}" style="animation-delay:${Math.min(i,8)*.04}s">${act?'<div class="bk-bg go">Confirmer</div><div class="bk-bg stop">Annuler</div>':''}${card}</div>`;
+}
+function bkGroups(list,past,i0){
+  let h='',ld=null,i=i0;
+  list.forEach(b=>{if(b.date!==ld){const n=list.filter(x=>x.date===b.date).length;h+=`<div class="h-day"><span>${esc(bkDay(b.date))}</span><span>${n} course${n>1?'s':''}</span></div>`;ld=b.date}h+=bkCard(b,past,i++)});
+  return h;
+}
+function bkRender(){
+  const el=$('#bkBody');if(!el)return;
+  const sub=$('#bkSub');
+  if(BK.state==='load'||BK.state==='idle'){el.innerHTML='<div class="bk-spin"></div>';return}
+  if(BK.state==='offline'){sub.textContent='HORS LIGNE';el.innerHTML=`<div class="bk-card"><h2>Connexion impossible</h2><p>${esc(BK.err)||'Vérifie ta connexion internet pour recevoir les réservations.'}</p><button class="sbtn acc" id="bkRetry" style="margin-top:18px">Réessayer</button></div>`;$('#bkRetry').onclick=()=>{BK.state='idle';BK.err='';if(BK.auth)bkAuth(BK.auth.currentUser);else bkInit()};return}
+  if(BK.state==='login'){
+    sub.textContent='CONNEXION ADMIN';
+    el.innerHTML=`<div class="bk-card"><h2>Espace chauffeur</h2><p>Connecte-toi avec ton compte administrateur du site pour recevoir, confirmer et clôturer les réservations.</p>
+    <label class="bk-in"><span>Nom</span><div class="inp"><input id="bkN" autocomplete="username" autocapitalize="words"></div></label>
+    <label class="bk-in"><span>Mot de passe</span><div class="inp"><input id="bkP" type="password" autocomplete="current-password"></div></label>
+    <div class="bk-err" id="bkE">${esc(BK.err)}</div><button class="sbtn acc" id="bkGo">Se connecter</button></div>`;
+    const goBtn=$('#bkGo');
+    const login=async()=>{
+      const n=$('#bkN').value,pw=$('#bkP').value,e=$('#bkE');
+      if(!bkSlug(n)||!pw){e.textContent='Indique ton nom et ton mot de passe.';shake(goBtn);buzz('heavy');return}
+      goBtn.disabled=true;goBtn.textContent='Connexion…';BK.err='';
+      try{await BK.A.signInWithEmailAndPassword(BK.auth,bkSlug(n)+'@'+FB_DOM,pw);document.activeElement&&document.activeElement.blur()}
+      catch(x){e.textContent=bkErr(x.code);shake(goBtn);buzz('heavy');goBtn.disabled=false;goBtn.textContent='Se connecter'}
+    };
+    goBtn.onclick=login;$('#bkP').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+    return;
+  }
+  const L=BK.list,w=L.filter(b=>b.status==='En attente').length,ok=L.filter(b=>b.status==='Confirmé').length,td=L.filter(b=>b.date===isoP(0)&&(b.status==='En attente'||b.status==='Confirmé')).length;
+  sub.textContent=w?w+' À TRAITER':'TOUT EST À JOUR';
+  const segs=[['all','À venir'],['En attente','À traiter'],['Terminée','Faites'],['Annulé','Annulées']];
+  const {up,past}=bkVisible();
+  let list='';
+  if(!up.length&&!past.length)list=`<div class="empty-h"><div class="car"></div><b>Rien ici</b>${BK.filter==='all'?'Les nouvelles réservations du site arrivent ici automatiquement.':'Aucune course dans cette catégorie.'}</div>`;
+  else{list=bkGroups(up,false,0);if(past.length)list+='<div class="bk-sep">Passées</div>'+bkGroups(past,true,up.length)}
+  el.innerHTML=`<div class="bk-sum"><button class="w" data-f="En attente"><span>À traiter</span><b>${w}</b></button><button class="o" data-f="all"><span>Confirmées</span><b>${ok}</b></button><button data-f="all"><span>Aujourd'hui</span><b>${td}</b></button></div>
+  <div class="s-seg bk-seg">${segs.map(([k,l])=>`<button data-f="${k}" class="${BK.filter===k?'on':''}">${l}</button>`).join('')}</div>
+  <div id="bkList">${list}</div><button class="bk-out" id="bkOut">Se déconnecter · ${esc(BK.me.name)}</button>`;
+  bkSwipe(el);
+}
+$('#bkBody').addEventListener('click',e=>{
+  const f=e.target.closest('[data-f]');if(f){if(BK.filter!==f.dataset.f){BK.filter=f.dataset.f;BK.open=null;buzz();bkRender()}return}
+  if(e.target.closest('#bkOut')){const o=e.target.closest('#bkOut');if(o.dataset.armed){BK.A.signOut(BK.auth);store.set('bk_on',false)}else{o.dataset.armed=1;o.textContent='Touche encore pour te déconnecter';o.style.color='var(--red)';setTimeout(()=>{if(o.isConnected)bkRender()},2500)}return}
+  const card=e.target.closest('.ride');if(!card)return;
+  const b=BK.list.find(x=>x.id===card.dataset.id);if(!b)return;
+  const a=e.target.closest('[data-bk]');
+  if(a){
+    const k=a.dataset.bk,arm=(lbl,fn)=>{if(a.dataset.armed)return fn();a.dataset.armed=1;const s=a.querySelector('span')||a;s.textContent=lbl;buzz();setTimeout(()=>{if(a.isConnected&&a.dataset.armed)bkRender()},2500)};
+    if(k==='confirm')bkConfirm(b.id);
+    if(k==='cancel')arm('Confirmer ?',()=>bkCancel(b.id));
+    if(k==='done')arm('Confirmer la fin ?',()=>bkDone(b));
+    if(k==='restore')bkSet(b.id,{status:b.status==='Annulé'?'En attente':'Confirmé'},'Remise à venir');
+    if(k==='meter')bkMeter();
+    if(k==='serieOk')arm('Confirmer ?',()=>bkSerie(b.serie,'Confirmé'));
+    if(k==='serieNo')arm('Confirmer ?',()=>bkSerie(b.serie,'Annulé'));
+    if(k==='del')arm('Supprimer définitivement ?',()=>{BK.open=null;bkDel(b.id)});
+    return;
+  }
+  if(e.target.closest('.ride-row')){if(card.dataset.swiped){delete card.dataset.swiped;return}const open=!card.classList.contains('open');$$('#bkList .ride.open').forEach(x=>x!==card&&x.classList.remove('open'));card.classList.toggle('open',open);BK.open=open?b.id:null;buzz()}
+});
+function bkSwipe(root){
+  root.querySelectorAll('.bk-swipe[data-sw]:not([data-sw=""])').forEach(box=>{
+    const row=box.querySelector('.ride'),g=box.querySelector('.bk-bg.go'),st=box.querySelector('.bk-bg.stop'),b=BK.list.find(x=>x.id===box.dataset.sw);
+    if(!row||!b)return;const T=88;let x0=0,y0=0,dx=0,live=false,dec=false;
+    row.addEventListener('touchstart',e=>{if(e.touches.length!==1||row.classList.contains('open'))return;x0=e.touches[0].clientX;y0=e.touches[0].clientY;dx=0;live=true;dec=false},{passive:true});
+    row.addEventListener('touchmove',e=>{if(!live)return;const x=e.touches[0].clientX-x0,y=e.touches[0].clientY-y0;
+      if(!dec){if(Math.abs(x)<10&&Math.abs(y)<10)return;if(Math.abs(y)>Math.abs(x)){live=false;return}dec=true;box.classList.add('drag')}
+      if(e.cancelable)e.preventDefault();dx=x;const lim=(x>0&&b.status==='Confirmé')?x*.18:x*(Math.abs(x)>T?.6:1);
+      row.style.transform=`translateX(${lim}px)`;g.style.opacity=lim>0?Math.min(1,lim/T):0;st.style.opacity=lim<0?Math.min(1,-lim/T):0},{passive:false});
+    const end=()=>{if(!live)return;live=false;box.classList.remove('drag');row.style.transform='';g.style.opacity='';st.style.opacity='';
+      if(dec){row.dataset.swiped=1;setTimeout(()=>delete row.dataset.swiped,400)}
+      if(dx>T&&b.status!=='Confirmé')bkConfirm(b.id);else if(dx<-T)bkCancel(b.id);dx=0};
+    row.addEventListener('touchend',end,{passive:true});row.addEventListener('touchcancel',end,{passive:true});
+  });
+}
 
 /* Native */
 function setupNative(){
@@ -953,6 +1287,7 @@ function setupNative(){
     A.addListener('backButton',()=>{
       if(rcOpen)return closeReceipt();
       if(document.activeElement&&document.activeElement.tagName==='INPUT')return document.activeElement.blur();
+      if(activeTab==='settings')return go(lastTab);
       if(activeTab!=='meter')return go('meter');
       A.minimizeApp();
     });
@@ -984,7 +1319,7 @@ function boot(){
   insetFallback();setupNative();
   const act=store.get('tx_active',null);
   if(act&&act.rates)ride=Object.assign(act,{status:'paused',anchor:null,lastTick:Date.now()});
-  renderSettings();renderHistory();paintState();paintMeter();splash();
+  renderSettings();renderHistory();paintState();paintMeter();splash();setTimeout(bkBoot,1200);
   setInterval(tick,250);startGps(true);
   document.addEventListener('visibilitychange',()=>{tick();if(document.hidden)persist()});
   window.addEventListener('resize',()=>traceDirty=true);

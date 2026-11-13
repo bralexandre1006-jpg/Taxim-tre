@@ -11,6 +11,7 @@
 | Signature | Keystore fixe intégré au workflow (alias `taximetre`), remplacé par les secrets `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD` s'ils existent |
 | Version | `versionName` = `package.json` → `version` ; `versionCode` auto (horodatage) dans `scripts/patch-android.js` |
 | Données locales | `localStorage` de la WebView : `tx_history`, `tx_settings`, `tx_tariff`, `tx_active`, `tx_sper` (via l'objet `store` de `src/index.html`) |
+| Réservations | Firebase Firestore `rst-transport-30220`, collection `bookings` (partagée avec le site client Netlify). Connexion admin dans l’app ; clé locale `bk_on` |
 | Appareil cible | Xiaomi 17T Pro (HyperOS) |
 
 ### Structure
