@@ -625,7 +625,7 @@ body.bkwait #nav button[data-tab="booking"] .badge{transform:scale(1)}
 <script>
 (()=>{
 'use strict';
-const VERSION='1.5.0';
+const VERSION='1.5.1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 
@@ -1246,6 +1246,7 @@ function bkGroups(list,past,i0){
 }
 function bkRender(soft){
   const el=$('#bkBody');if(!el)return;
+  if(soft&&BK.view==='add')return;
   const ae=document.activeElement;if(soft&&ae&&ae.tagName==='INPUT'&&el.contains(ae)){BK.held=true;return}BK.held=false;
   const sub=$('#bkSub');
   if(BK.state==='load'||BK.state==='idle'){el.innerHTML='<div class="bk-spin"></div>';return}
@@ -1387,9 +1388,19 @@ function bkDebtClick(e){
     if(!(amt>0)){er.textContent='Indique un montant.';shake(v);buzz('heavy');return true}
     const known=BK.list.find(b=>(b.clientName||'').trim().toLowerCase()===who.toLowerCase()&&b.clientUid);
     v.disabled=true;v.textContent='Enregistrement…';
-    BK.F.addDoc(BK.F.collection(BK.db,'bookings'),{clientUid:known?known.clientUid:BK.me.uid,clientName:known?known.clientName:who,to:what,date,time:'',trip:'Aller simple',pay:'later',paid:false,amount:amt,notes:'',status:'Terminée',manual:true,createdAt:BK.F.serverTimestamp()})
-      .then(()=>{buzz('success');toast('Dette ajoutée · '+bkEur(amt));BK.who=known?known.clientName:who;BK.view='client';bkRender()})
-      .catch(()=>{v.disabled=false;v.textContent='Enregistrer la dette';er.textContent='Enregistrement refusé.';buzz('heavy')});
+    const name=known?known.clientName:who;
+    /* Même forme que « Ajouter une course » du site (acceptée par les règles Firebase), puis passage en dette. */
+    (async()=>{
+      let ref=null;
+      try{
+        ref=await BK.F.addDoc(BK.F.collection(BK.db,'bookings'),{clientUid:BK.me.uid,clientName:name,to:what,date,time:'12:00',trip:'Aller simple',notes:'',status:'Confirmé',createdAt:BK.F.serverTimestamp()});
+        await BK.F.updateDoc(ref,{status:'Terminée',pay:'later',paid:false,amount:amt,zero:false});
+        buzz('success');toast('Dette ajoutée · '+bkEur(amt));BK.who=name;BK.view='client';bkRender();
+      }catch(x){
+        if(ref)BK.F.deleteDoc(ref).catch(()=>{});
+        v.disabled=false;v.textContent='Enregistrer la dette';er.textContent='Enregistrement refusé ('+(x.code||x.message||'erreur')+').';buzz('heavy');
+      }
+    })();
   }
   else return false;
   return true;
