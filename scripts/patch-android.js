@@ -44,23 +44,23 @@ if (fs.existsSync(bgGradle)) {
   fs.writeFileSync(bgGradle, bg);
 }
 
-// Icônes : voiture jaune sur fond noir, générées depuis assets/car-mask.png
+// Icônes : logo jaune (compteur + taxi) sur fond noir, générées depuis assets/logo-mask.png
 (async () => {
   const sharp = require('sharp');
   const A = (f) => path.join(root, 'assets', f);
   const BG = { r: 11, g: 11, b: 13, alpha: 1 };
-  async function car(width) {
-    const alpha = await sharp(A('car-mask.png')).resize({ width, kernel: 'lanczos3' }).extractChannel('alpha').raw().toBuffer({ resolveWithObject: true });
+  async function car(width, file = 'logo-mask.png') {
+    const alpha = await sharp(A(file)).resize({ width, kernel: 'lanczos3' }).extractChannel('alpha').raw().toBuffer({ resolveWithObject: true });
     const { width: w, height: h } = alpha.info;
     const rgb = Buffer.alloc(w * h * 3);
     for (let i = 0; i < w * h; i++) { rgb[i * 3] = 255; rgb[i * 3 + 1] = 196; rgb[i * 3 + 2] = 0; }
     const img = await sharp(rgb, { raw: { width: w, height: h, channels: 3 } }).joinChannel(alpha.data, { raw: { width: w, height: h, channels: 1 } }).png().toBuffer();
     return { img, w, h };
   }
-  const big = await car(940);
+  const big = await car(760);
   await sharp({ create: { width: 1024, height: 1024, channels: 4, background: BG } })
     .composite([{ input: big.img, left: (1024 - big.w) >> 1, top: (1024 - big.h) >> 1 }]).flatten({ background: BG }).png().toFile(A('icon-only.png'));
-  const fg = await car(700);
+  const fg = await car(600);
   await sharp({ create: { width: 1024, height: 1024, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
     .composite([{ input: fg.img, left: (1024 - fg.w) >> 1, top: (1024 - fg.h) >> 1 }]).png().toFile(A('icon-foreground.png'));
   await sharp({ create: { width: 1024, height: 1024, channels: 3, background: BG } }).png().toFile(A('icon-background.png'));
@@ -72,5 +72,5 @@ if (fs.existsSync(bgGradle)) {
   fs.mkdirSync(path.join(res, 'drawable-nodpi'), { recursive: true });
   await sharp({ create: { width: 96, height: 96, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
     .composite([{ input: small, gravity: 'center' }]).png().toFile(path.join(res, 'drawable-nodpi', 'ic_stat_taxi.png'));
-  console.log('Icônes générées (voiture seule)');
+  console.log('Icônes générées (logo)');
 })().catch(e => { console.error('Erreur icônes :', e); process.exit(1); });

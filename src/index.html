@@ -56,15 +56,15 @@ svg{display:block}
 .sp-road{position:absolute;left:0;right:0;top:50%;height:160px;transform:translateY(-62%);pointer-events:none}
 .sp-road i{position:absolute;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,rgba(255,196,0,.6),transparent);opacity:0;animation:streak .9s var(--ease) forwards}
 @keyframes streak{0%{transform:translateX(110vw);opacity:0}25%{opacity:1}100%{transform:translateX(-120vw);opacity:0}}
-.sp-logo{position:relative;width:min(74vw,330px);aspect-ratio:918/688}
+.sp-logo{position:relative;width:min(62vw,280px);aspect-ratio:689/567}
 .lay{position:absolute;inset:0;background:var(--grad);-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
 .lay.base{--m:url(LAYER_BASE);clip-path:inset(0 100% 0 0);animation:baseIn .8s .55s var(--ease) forwards}
-.lay.car{--m:url(LAYER_CAR);transform:translateX(-140vw);animation:drive 1.25s .1s cubic-bezier(.16,.84,.3,1) forwards;transform-origin:50% 55%}
-.lay.needle{--m:url(LAYER_NEEDLE);opacity:0;transform-origin:25.05% 94.77%;transform:rotate(62deg);animation:needle 1s 1.05s var(--spring) forwards}
+.lay.car{--m:url(LAYER_CAR);opacity:0;transform:translateY(38%) scale(.35);animation:drive 1.1s .1s cubic-bezier(.16,.84,.3,1) forwards;transform-origin:50% 80%}
+.lay.needle{--m:url(LAYER_NEEDLE);opacity:0;transform-origin:50.15% 93.83%;transform:scale(0);animation:needle .7s 1.15s var(--spring) forwards}
 .lay.shine{--m:url(LOGO_FULL);background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.95) 50%,transparent 65%);background-size:300% 100%;background-position:120% 0;opacity:0;animation:shine .9s 1.75s ease-in-out forwards}
 @keyframes baseIn{to{clip-path:inset(0 0 0 0)}}
-@keyframes drive{0%{transform:translateX(-140vw) skewX(-16deg)}62%{transform:translateX(4%) skewX(-4deg)}74%{transform:translateX(-1.5%) translateY(1.5%) skewX(7deg) rotate(1.4deg)}86%{transform:translateX(.5%) translateY(-1%) skewX(-2deg) rotate(-.5deg)}100%{transform:none}}
-@keyframes needle{0%{opacity:0;transform:rotate(62deg)}25%{opacity:1}100%{opacity:1;transform:rotate(0)}}
+@keyframes drive{0%{opacity:0;transform:translateY(38%) scale(.35)}30%{opacity:1}70%{transform:translateY(-2%) scale(1.04)}86%{transform:translateY(1%) scale(.99)}100%{opacity:1;transform:none}}
+@keyframes needle{0%{opacity:0;transform:scale(0)}40%{opacity:1}100%{opacity:1;transform:scale(1)}}
 @keyframes shine{0%{opacity:1;background-position:120% 0}100%{opacity:1;background-position:-20% 0}}
 .sp-glow{position:absolute;inset:-30%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,196,0,.28),transparent 70%);opacity:0;transform:scale(.6);animation:glow 1.2s 1.6s var(--ease) forwards;pointer-events:none}
 @keyframes glow{0%{opacity:0;transform:scale(.6)}40%{opacity:1}100%{opacity:.45;transform:scale(1.1)}}
@@ -88,7 +88,7 @@ body.ready .reveal{animation:rise .7s var(--ease) both}
 @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 
 .top{display:flex;align-items:center;gap:12px;height:58px;margin-bottom:10px}
-.brand{width:52px;height:39px;background:var(--grad);-webkit-mask:url(LOGO_FULL) center/contain no-repeat;mask:url(LOGO_FULL) center/contain no-repeat;flex:none}
+.brand{width:50px;height:41px;background:var(--grad);-webkit-mask:url(LOGO_FULL) center/contain no-repeat;mask:url(LOGO_FULL) center/contain no-repeat;flex:none}
 .top h1{font-family:var(--num);font-size:26px;font-weight:800;letter-spacing:.01em;flex:1;line-height:1}
 .top h1 small{display:block;font-family:var(--ui);font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.16em;margin-top:5px}
 .pill{display:flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:18px;background:var(--s2);border:1px solid var(--line);font-size:13px;font-weight:800;color:var(--muted);transition:color .3s,border-color .3s}
@@ -625,7 +625,7 @@ body.bkwait #nav button[data-tab="booking"] .badge{transform:scale(1)}
 <script>
 (()=>{
 'use strict';
-const VERSION='1.5.1';
+const VERSION='1.6.0';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 
