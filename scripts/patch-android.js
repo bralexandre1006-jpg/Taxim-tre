@@ -57,10 +57,10 @@ if (fs.existsSync(bgGradle)) {
     const img = await sharp(rgb, { raw: { width: w, height: h, channels: 3 } }).joinChannel(alpha.data, { raw: { width: w, height: h, channels: 1 } }).png().toBuffer();
     return { img, w, h };
   }
-  const big = await car(880);
+  const big = await car(700);
   await sharp({ create: { width: 1024, height: 1024, channels: 4, background: BG } })
     .composite([{ input: big.img, left: (1024 - big.w) >> 1, top: (1024 - big.h) >> 1 }]).flatten({ background: BG }).png().toFile(A('icon-only.png'));
-  const fg = await car(660);
+  const fg = await car(550);
   await sharp({ create: { width: 1024, height: 1024, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
     .composite([{ input: fg.img, left: (1024 - fg.w) >> 1, top: (1024 - fg.h) >> 1 }]).png().toFile(A('icon-foreground.png'));
   await sharp({ create: { width: 1024, height: 1024, channels: 3, background: BG } }).png().toFile(A('icon-background.png'));
